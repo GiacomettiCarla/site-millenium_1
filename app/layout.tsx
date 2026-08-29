@@ -15,11 +15,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Millenium Despachos Aduaneiros',
   description:
-    'Despacho aduaneiro, comercio exterior e logistica internacional com atendimento consultivo desde 1998.',
+    'Despacho aduaneiro, comércio exterior e logística internacional para destravar cargas, reduzir riscos e dar previsibilidade à operação.',
   openGraph: {
     title: 'Millenium Despachos Aduaneiros',
     description:
-      'Solucoes aduaneiras para importadores e exportadores com etica, transparencia e compromisso.',
+      'Soluções aduaneiras para importadores e exportadores com estratégia documental, conformidade e acompanhamento próximo.',
     images: ['/og.png'],
     type: 'website',
   },
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Millenium Despachos Aduaneiros',
     description:
-      'Solucoes aduaneiras para importadores e exportadores com etica, transparencia e compromisso.',
+      'Soluções aduaneiras para importadores e exportadores com estratégia documental, conformidade e acompanhamento próximo.',
     images: ['/og.png'],
   },
 };
