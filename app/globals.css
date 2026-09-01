@@ -606,13 +606,13 @@ body {
 .faq-block {
   display: grid;
   grid-template-columns: 0.8fr 1.2fr;
-  gap: clamp(2rem, 5vw, 4rem);
-  padding-top: clamp(4rem, 8vw, 6.5rem);
+  gap: clamp(3rem, 7vw, 6rem);
+  padding-top: clamp(5rem, 10vw, 8rem);
 }
 
 .faq-list {
   display: grid;
-  gap: 12px;
+  gap: clamp(18px, 2.4vw, 28px);
 }
 
 .faq-item {
@@ -622,12 +622,22 @@ body {
   animation: reveal-card linear both;
   animation-timeline: view();
   animation-range: entry 8% cover 34%;
+  transition:
+    background 260ms linear,
+    border-color 260ms linear,
+    opacity 260ms linear;
+}
+
+.faq-item:hover,
+.faq-item[open] {
+  border-color: rgba(67, 207, 216, 0.32);
+  background: rgba(255, 255, 255, 0.066);
 }
 
 .faq-item summary {
   cursor: pointer;
   list-style: none;
-  padding: 22px 24px;
+  padding: 26px 28px;
   color: white;
   font-size: clamp(1rem, 1.45vw, 1.18rem);
   font-weight: 650;
@@ -652,9 +662,10 @@ body {
 .faq-item p {
   margin: 0;
   border-top: 1px solid rgba(255, 255, 255, 0.09);
-  padding: 0 24px 22px;
+  padding: 0 28px 26px;
   color: rgb(196, 210, 218);
   line-height: 1.7;
+  animation: faq-answer 260ms linear both;
 }
 
 @keyframes enter-soft {
@@ -689,6 +700,18 @@ body {
 
   50% {
     box-shadow: inset 180px 0 80px rgba(67, 207, 216, 0.1);
+  }
+}
+
+@keyframes faq-answer {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -748,6 +771,19 @@ body {
 
   .process-card {
     grid-template-columns: 1fr;
+    opacity: 0.58;
+    transform: scale(0.94);
+    transform-origin: center;
+    transition:
+      opacity 360ms linear,
+      transform 360ms linear,
+      border-color 360ms linear,
+      background 360ms linear;
+  }
+
+  .process-card.is-active {
+    opacity: 1;
+    transform: scale(1);
   }
 
   .section-pad,
@@ -755,5 +791,22 @@ body {
   .timeline-section,
   .contact-section {
     padding: 4.2rem 0;
+  }
+
+  .faq-block {
+    gap: 2rem;
+    padding-top: 5rem;
+  }
+
+  .faq-list {
+    gap: 18px;
+  }
+
+  .faq-item summary {
+    padding: 22px 20px;
+  }
+
+  .faq-item p {
+    padding: 0 20px 22px;
   }
 }
