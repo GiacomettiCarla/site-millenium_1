@@ -143,8 +143,7 @@ export default function Home() {
 
       <header className="fixed left-1/2 top-4 z-40 flex w-[min(1160px,calc(100%-28px))] -translate-x-1/2 items-center justify-between border border-white/12 bg-[rgba(4,14,25,0.74)] px-4 py-3 shadow-2xl shadow-black/25 backdrop-blur-xl">
         <a href="#inicio" className="flex items-center gap-3" aria-label="Millenium Despachos Aduaneiros">
-          <span className="grid size-8 place-items-center bg-[var(--signal)] text-xs font-black text-slate-950">M</span>
-          <span className="text-xs font-black tracking-[0.18em] text-white sm:text-sm">MILLENIUM</span>
+          <img src="/millenium-logo.png" alt="Millenium Despachos Aduaneiros" className="header-logo" />
         </a>
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Navegação principal">
           {navItems.map(([label, id]) => (
@@ -161,9 +160,14 @@ export default function Home() {
 
       <section id="inicio" className="hero-section">
         <div className="hero-media">
-          <video autoPlay muted loop playsInline poster="https://images.unsplash.com/photo-1769144256207-bc4bb75b29db?auto=format&fit=crop&fm=jpg&q=74&w=2400">
-            <source src="https://videos.pexels.com/video-files/2620043/2620043-uhd_2560_1440_25fps.mp4" type="video/mp4" />
-          </video>
+          <iframe
+            className="hero-youtube"
+            src="https://www.youtube.com/embed/8G7f9GgP6CI?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=8G7f9GgP6CI&start=46&modestbranding=1&rel=0&disablekb=1&fs=0&iv_load_policy=3"
+            title="Vídeo institucional Millenium"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            aria-hidden="true"
+            tabIndex={-1}
+          />
         </div>
 
         <div className="mx-auto grid min-h-screen max-w-7xl items-center gap-10 px-5 pb-12 pt-28 sm:px-8 lg:grid-cols-[1fr_0.9fr] lg:px-14">
