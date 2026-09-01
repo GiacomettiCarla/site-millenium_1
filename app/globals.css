@@ -286,6 +286,7 @@ body {
 
 .section-heading h2,
 .about-copy h2,
+.form-copy h2,
 .contact-section h2 {
   margin-top: 0.85rem;
   color: white;
@@ -294,12 +295,14 @@ body {
   line-height: 1.1;
 }
 
+.form-copy h2,
 .contact-section h2 {
   color: #07121d;
 }
 
 .section-heading p:not(.eyebrow),
 .about-copy p,
+.form-copy p,
 .contact-section p {
   margin-top: 1rem;
   color: rgb(193, 207, 216);
@@ -307,6 +310,7 @@ body {
   line-height: 1.75;
 }
 
+.form-copy p,
 .contact-section p {
   color: rgb(71, 85, 105);
 }
@@ -497,6 +501,162 @@ body {
   font-weight: 650;
 }
 
+.form-shell {
+  display: grid;
+  grid-template-columns: 0.88fr 1.12fr;
+  gap: 0;
+  overflow: hidden;
+  background: white;
+  color: #07121d;
+  animation: reveal-card linear both;
+  animation-timeline: view();
+  animation-range: entry 6% cover 32%;
+}
+
+.form-copy {
+  padding: clamp(2rem, 4vw, 3.5rem);
+}
+
+.contact-list {
+  display: grid;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.contact-list div {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-top: 1px solid rgb(226, 232, 240);
+  padding-top: 16px;
+  color: #0f172a;
+  font-weight: 650;
+}
+
+.lead-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  background: #0b1826;
+  padding: clamp(2rem, 4vw, 3.5rem);
+}
+
+.lead-form label {
+  display: grid;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.78rem;
+  font-weight: 820;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lead-form input,
+.lead-form select,
+.lead-form textarea {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.055);
+  color: white;
+  font: inherit;
+  font-size: 0.98rem;
+  font-weight: 450;
+  letter-spacing: 0;
+  outline: none;
+  padding: 14px 15px;
+  text-transform: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.lead-form textarea {
+  resize: vertical;
+}
+
+.lead-form select option {
+  color: #07121d;
+}
+
+.lead-form input::placeholder,
+.lead-form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.lead-form input:focus,
+.lead-form select:focus,
+.lead-form textarea:focus {
+  border-color: var(--signal);
+  background: rgba(255, 255, 255, 0.085);
+  box-shadow: 0 0 0 3px rgba(67, 207, 216, 0.14);
+}
+
+.full-field,
+.lead-form button {
+  grid-column: 1 / -1;
+}
+
+.lead-form button {
+  border: 0;
+  cursor: pointer;
+}
+
+.faq-block {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  padding-top: clamp(4rem, 8vw, 6.5rem);
+}
+
+.faq-list {
+  display: grid;
+  gap: 12px;
+}
+
+.faq-item {
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  background: rgba(255, 255, 255, 0.045);
+  color: white;
+  animation: reveal-card linear both;
+  animation-timeline: view();
+  animation-range: entry 8% cover 34%;
+}
+
+.faq-item summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 22px 24px;
+  color: white;
+  font-size: clamp(1rem, 1.45vw, 1.18rem);
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  float: right;
+  color: var(--signal);
+  content: "+";
+  font-weight: 800;
+}
+
+.faq-item[open] summary::after {
+  content: "-";
+}
+
+.faq-item p {
+  margin: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  padding: 0 24px 22px;
+  color: rgb(196, 210, 218);
+  line-height: 1.7;
+}
+
 @keyframes enter-soft {
   from {
     opacity: 0;
@@ -571,6 +731,7 @@ body {
 
   .section-heading h2,
   .about-copy h2,
+  .form-copy h2,
   .contact-section h2 {
     font-size: clamp(1.75rem, 8vw, 2.35rem);
   }
@@ -578,7 +739,10 @@ body {
   .service-grid,
   .reason-grid,
   .timeline-grid,
-  .stat-row {
+  .stat-row,
+  .lead-form,
+  .form-shell,
+  .faq-block {
     grid-template-columns: 1fr;
   }
 

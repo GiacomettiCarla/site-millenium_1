@@ -7,7 +7,6 @@ import {
   BriefcaseBusiness,
   CheckCircle2,
   ClipboardCheck,
-  Container,
   FileCheck2,
   FileSearch,
   Globe2,
@@ -86,6 +85,29 @@ const contacts = [
   ["imp.mille@uol.com.br", Boxes],
   ["Atendimento nacional", MapPinned],
 ] as const;
+
+const faqs = [
+  [
+    "Em que momento devo acionar a Millenium?",
+    "O ideal é antes do embarque ou antes da chegada da carga. Assim conseguimos revisar documentos, orientar o melhor caminho aduaneiro e reduzir riscos de atraso, exigência ou custo extra.",
+  ],
+  [
+    "A Millenium atende importação e exportação?",
+    "Sim. A empresa atua com importação, exportação, regimes especiais e consultoria aduaneira para empresas de diferentes segmentos.",
+  ],
+  [
+    "Vocês ajudam em Drawback e Admissão Temporária?",
+    "Sim. A Millenium presta apoio em Drawback, Admissão Temporária, Consumo de Bordo e outras demandas que exigem orientação técnica no comércio exterior.",
+  ],
+  [
+    "O atendimento é feito somente presencialmente?",
+    "Não. A operação foi estruturada para atendimento remoto, com acompanhamento próximo dos processos e comunicação direta durante as etapas da operação.",
+  ],
+  [
+    "Que informações devo enviar para uma primeira análise?",
+    "Envie o tipo de operação, origem ou destino, descrição da mercadoria, previsão de chegada ou embarque e quais documentos já possui. Com isso a equipe consegue orientar a próxima etapa.",
+  ],
+];
 
 function clamp(value: number, min = 0, max = 1) {
   return Math.min(max, Math.max(min, value));
@@ -281,38 +303,90 @@ export default function Home() {
       </section>
 
       <section id="contato" className="contact-section">
-        <div className="mx-auto grid max-w-7xl overflow-hidden bg-white text-slate-950 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="p-7 sm:p-12 lg:p-14">
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">Contato</p>
-            <h2>Para fazer uma consulta, entre em contato com a gente.</h2>
-            <p>
-              Envie sua demanda e receba uma leitura inicial sobre documentos, riscos, prazos e o melhor caminho para sua operação.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href="mailto:millenium.desp@uol.com.br" className="dark-action">
-                Enviar e-mail
-                <Mail className="size-4" />
-              </a>
-              <a href="mailto:sergio.mille@uol.com.br" className="light-action">
-                Falar com Sergio
-                <ArrowRight className="size-4" />
-              </a>
-            </div>
-          </div>
-          <div className="bg-slate-950 p-7 text-white sm:p-12 lg:p-14">
-            <div className="grid gap-5">
-              {contacts.map(([label, Icon]) => (
-                <div key={label} className="flex items-center gap-4 border-b border-white/10 pb-4">
-                  <Icon className="size-5 text-[var(--signal)]" />
-                  <span className="font-semibold">{label}</span>
-                </div>
-              ))}
-            </div>
-            <div className="mt-10 border border-[var(--signal)]/30 bg-[var(--signal)]/10 p-5">
-              <Container className="mb-4 size-7 text-[var(--signal)]" />
-              <p className="text-lg font-semibold leading-snug">
-                Importação, exportação, Drawback, Admissão Temporária, Consumo de Bordo e consultoria aduaneira.
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-14">
+          <div className="form-shell">
+            <div className="form-copy">
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">Consulta personalizada</p>
+              <h2>Para fazer uma consulta, conte o que precisa desembaraçar.</h2>
+              <p>
+                Envie sua demanda e receba uma leitura inicial sobre documentos, riscos, prazos e o melhor caminho para sua operação.
               </p>
+              <div className="contact-list">
+                {contacts.map(([label, Icon]) => (
+                  <div key={label}>
+                    <Icon className="size-5 text-[var(--signal)]" />
+                    <span>{label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <form
+              className="lead-form"
+              action="mailto:millenium.desp@uol.com.br"
+              method="post"
+              encType="text/plain"
+            >
+              <label>
+                Nome
+                <input name="nome" type="text" placeholder="Seu nome" required />
+              </label>
+              <label>
+                Empresa
+                <input name="empresa" type="text" placeholder="Nome da empresa" />
+              </label>
+              <label>
+                E-mail
+                <input name="email" type="email" placeholder="seu@email.com" required />
+              </label>
+              <label>
+                Telefone
+                <input name="telefone" type="tel" placeholder="(00) 00000-0000" />
+              </label>
+              <label>
+                Tipo de operação
+                <select name="tipo_de_operacao" defaultValue="">
+                  <option value="" disabled>Selecione uma opção</option>
+                  <option>Importação</option>
+                  <option>Exportação</option>
+                  <option>Drawback</option>
+                  <option>Admissão Temporária</option>
+                  <option>Consultoria aduaneira</option>
+                  <option>Outro</option>
+                </select>
+              </label>
+              <label>
+                Previsão ou urgência
+                <input name="prazo" type="text" placeholder="Ex.: carga chega em 10 dias" />
+              </label>
+              <label className="full-field">
+                Conte um pouco sobre sua demanda
+                <textarea
+                  name="mensagem"
+                  placeholder="Informe origem, destino, mercadoria, etapa atual e documentos que já possui."
+                  rows={5}
+                  required
+                />
+              </label>
+              <button type="submit" className="dark-action">
+                Solicitar análise
+                <ArrowRight className="size-4" />
+              </button>
+            </form>
+          </div>
+
+          <div className="faq-block">
+            <div className="section-heading">
+              <p className="eyebrow">FAQ</p>
+              <h2>Perguntas frequentes.</h2>
+            </div>
+            <div className="faq-list">
+              {faqs.map(([question, answer]) => (
+                <details key={question} className="faq-item">
+                  <summary>{question}</summary>
+                  <p>{answer}</p>
+                </details>
+              ))}
             </div>
           </div>
         </div>
