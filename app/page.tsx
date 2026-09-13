@@ -115,6 +115,33 @@ function clamp(value: number, min = 0, max = 1) {
   return Math.min(max, Math.max(min, value));
 }
 
+function CountUp({ value, suffix = "" }: { value: number; suffix?: string }) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let frame = 0;
+    const totalFrames = 58;
+    const tick = () => {
+      frame += 1;
+      const progress = 1 - Math.pow(1 - frame / totalFrames, 3);
+      setCount(Math.round(value * progress));
+      if (frame < totalFrames) {
+        window.requestAnimationFrame(tick);
+      }
+    };
+
+    const request = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(request);
+  }, [value]);
+
+  return (
+    <strong>
+      +{count}
+      {suffix}
+    </strong>
+  );
+}
+
 export default function Home() {
   const [pageProgress, setPageProgress] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
@@ -234,18 +261,18 @@ export default function Home() {
       <section id="sobre" className="split-section light-section">
         <div className="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:px-14">
           <div className="image-frame">
-            <img src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?auto=format&fit=crop&q=74&w=1800" alt="Containers em operação logística internacional" />
+            <img src="/millenium-empresa.webp" alt="Recepção da Millenium Despachos Aduaneiros" />
           </div>
           <div className="about-copy">
             <p className="eyebrow">Sobre nós</p>
             <h2>Experiência, agilidade e segurança para operações internacionais.</h2>
             <p>
-              Fundada em 1998, a Millenium Despachos Aduaneiros tem como base ética, transparência e compromisso com seus clientes, mantendo-se atualizada com regulamentações aduaneiras.
+              Desde 1998, a Millenium Despachos Aduaneiros une domínio técnico, transparência e acompanhamento próximo para que empresas importem e exportem com mais segurança.
             </p>
             <div className="stat-row">
-              <div><strong>1998</strong><span>fundação</span></div>
-              <div><strong>Online</strong><span>atendimento remoto</span></div>
-              <div><strong>Brasil</strong><span>atendimento</span></div>
+              <div><CountUp value={27} /><span>anos de experiência</span></div>
+              <div><CountUp value={500} /><span>empresas atendidas</span></div>
+              <div><CountUp value={3} /><span>frentes de atuação</span></div>
             </div>
           </div>
         </div>
