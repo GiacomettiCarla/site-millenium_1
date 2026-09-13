@@ -131,8 +131,10 @@
 
       .header-cta,
       .secondary {
-        border: 1px solid rgba(255, 255, 255, 0.22);
-        color: var(--brand);
+        border: 1px solid rgba(255, 255, 255, 0.42);
+        background: rgba(255, 255, 255, 0.15);
+        color: #ffffff;
+        backdrop-filter: blur(8px);
       }
 
       .header-cta {
@@ -171,7 +173,7 @@
         inset: 0;
         overflow: hidden;
         background:
-          linear-gradient(90deg, rgba(8, 10, 21, 0.82), rgba(21, 18, 58, 0.52) 48%, rgba(8, 10, 21, 0.4)),
+          linear-gradient(90deg, rgba(8, 10, 21, 0.78), rgba(21, 18, 58, 0.48) 48%, rgba(8, 10, 21, 0.34)),
           #080a15;
       }
 
@@ -182,7 +184,7 @@
         height: 100%;
         border: 0;
         object-fit: cover;
-        opacity: 0.92;
+        opacity: 0.96;
         pointer-events: none;
       }
 
@@ -191,8 +193,8 @@
         inset: 0;
         content: "";
         background:
-          linear-gradient(90deg, rgba(8, 10, 21, 0.82), rgba(22, 15, 101, 0.42) 45%, rgba(8, 10, 21, 0.2)),
-          linear-gradient(180deg, rgba(8, 10, 21, 0.25), rgba(8, 10, 21, 0.12) 55%, #f6f8fb 100%);
+          linear-gradient(90deg, rgba(8, 10, 21, 0.72), rgba(22, 15, 101, 0.36) 45%, rgba(8, 10, 21, 0.18)),
+          linear-gradient(180deg, rgba(8, 10, 21, 0.28), rgba(8, 10, 21, 0.24) 65%, rgba(8, 10, 21, 0.36) 100%);
       }
 
       .container {
@@ -269,11 +271,11 @@
         gap: 12px;
         width: min(100%, 430px);
         margin-left: auto;
-        border: 1px solid rgba(22, 15, 101, 0.13);
-        background: rgba(255, 255, 255, 0.86);
+        border: 1px solid rgba(255, 255, 255, 0.26);
+        background: rgba(255, 255, 255, 0.68);
         padding: 22px;
-        box-shadow: 0 30px 90px rgba(22, 15, 101, 0.16);
-        backdrop-filter: blur(18px);
+        box-shadow: 0 30px 90px rgba(4, 8, 22, 0.22);
+        backdrop-filter: blur(24px);
         animation: enter 850ms 160ms cubic-bezier(0.22, 1, 0.36, 1) both;
       }
 
@@ -794,6 +796,13 @@
       }
 
       @media (max-width: 640px) {
+        html,
+        body,
+        main {
+          max-width: 100%;
+          overflow-x: hidden;
+        }
+
         header {
           width: calc(100% - 20px);
           justify-content: center;
@@ -819,14 +828,17 @@
         }
 
         .hero-grid {
+          width: 100%;
+          max-width: 100%;
           min-height: 100svh;
           align-items: start;
           padding-top: 4.85rem;
+          overflow: hidden;
         }
 
         .hero-media {
           background:
-            linear-gradient(135deg, rgba(8, 10, 21, 0.52), rgba(22, 15, 101, 0.28) 48%, rgba(8, 10, 21, 0.3)),
+            linear-gradient(135deg, rgba(8, 10, 21, 0.58), rgba(22, 15, 101, 0.32) 48%, rgba(8, 10, 21, 0.36)),
             #171827;
         }
 
@@ -836,11 +848,13 @@
 
         .hero-media::after {
           background:
-            linear-gradient(180deg, rgba(8, 10, 21, 0.55), rgba(22, 15, 101, 0.22) 46%, rgba(8, 10, 21, 0.64)),
-            linear-gradient(90deg, rgba(8, 10, 21, 0.5), rgba(8, 10, 21, 0.18) 54%, rgba(22, 15, 101, 0.14));
+            linear-gradient(180deg, rgba(8, 10, 21, 0.62), rgba(22, 15, 101, 0.26) 46%, rgba(8, 10, 21, 0.66)),
+            linear-gradient(90deg, rgba(8, 10, 21, 0.58), rgba(8, 10, 21, 0.2) 54%, rgba(22, 15, 101, 0.16));
         }
 
         .hero-copy {
+          width: 100%;
+          max-width: 100%;
           padding-top: 0.4rem;
         }
 
@@ -863,7 +877,7 @@
 
         .secondary {
           border-color: rgba(255, 255, 255, 0.42);
-          background: rgba(255, 255, 255, 0.11);
+          background: rgba(255, 255, 255, 0.22);
           color: #ffffff;
           backdrop-filter: blur(8px);
         }
