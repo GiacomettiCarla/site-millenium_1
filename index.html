@@ -173,7 +173,7 @@
         inset: 0;
         overflow: hidden;
         background:
-          linear-gradient(90deg, rgba(8, 10, 21, 0.78), rgba(21, 18, 58, 0.48) 48%, rgba(8, 10, 21, 0.34)),
+          linear-gradient(90deg, rgba(8, 10, 21, 0.88), rgba(22, 15, 101, 0.62) 48%, rgba(8, 10, 21, 0.5)),
           #080a15;
       }
 
@@ -184,7 +184,7 @@
         height: 100%;
         border: 0;
         object-fit: cover;
-        opacity: 0.96;
+        opacity: 0.9;
         pointer-events: none;
       }
 
@@ -193,8 +193,8 @@
         inset: 0;
         content: "";
         background:
-          linear-gradient(90deg, rgba(8, 10, 21, 0.72), rgba(22, 15, 101, 0.36) 45%, rgba(8, 10, 21, 0.18)),
-          linear-gradient(180deg, rgba(8, 10, 21, 0.28), rgba(8, 10, 21, 0.24) 65%, rgba(8, 10, 21, 0.36) 100%);
+          linear-gradient(90deg, rgba(22, 15, 101, 0.82), rgba(22, 15, 101, 0.58) 46%, rgba(8, 10, 21, 0.34)),
+          linear-gradient(180deg, rgba(8, 10, 21, 0.3), rgba(8, 10, 21, 0.22) 68%, rgba(8, 10, 21, 0.42) 100%);
       }
 
       .container {
@@ -259,11 +259,46 @@
         text-shadow: 0 12px 34px rgba(0, 0, 0, 0.34);
       }
 
+      .hero-eyebrow-pill {
+        display: inline-flex;
+        width: fit-content;
+        align-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.38);
+        background: rgba(255, 255, 255, 0.82);
+        color: var(--brand);
+        padding: 8px 11px;
+        text-shadow: none;
+        backdrop-filter: blur(10px);
+      }
+
       .actions {
         display: flex;
         flex-wrap: wrap;
         gap: 12px;
         margin-top: 32px;
+      }
+
+      .hero-primary {
+        background: #ffffff;
+        color: var(--brand);
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.24);
+      }
+
+      .hero-primary:hover {
+        background: #f6f8fb;
+      }
+
+      .section-cta {
+        width: fit-content;
+        margin-top: 26px;
+      }
+
+      .mobile-section-cta {
+        display: none;
+      }
+
+      .reasons-cta {
+        margin-top: 34px;
       }
 
       .hero-panel {
@@ -272,10 +307,10 @@
         width: min(100%, 430px);
         margin-left: auto;
         border: 1px solid rgba(255, 255, 255, 0.26);
-        background: rgba(255, 255, 255, 0.68);
+        background: rgba(255, 255, 255, 0.55);
         padding: 22px;
         box-shadow: 0 30px 90px rgba(4, 8, 22, 0.22);
-        backdrop-filter: blur(24px);
+        backdrop-filter: blur(28px);
         animation: enter 850ms 160ms cubic-bezier(0.22, 1, 0.36, 1) both;
       }
 
@@ -453,6 +488,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+        object-position: center;
       }
 
       .about-copy {
@@ -831,6 +867,7 @@
           width: 100%;
           max-width: 100%;
           min-height: 100svh;
+          grid-template-columns: minmax(0, 1fr);
           align-items: start;
           padding-top: 4.85rem;
           overflow: hidden;
@@ -838,39 +875,47 @@
 
         .hero-media {
           background:
-            linear-gradient(135deg, rgba(8, 10, 21, 0.58), rgba(22, 15, 101, 0.32) 48%, rgba(8, 10, 21, 0.36)),
-            #171827;
+            linear-gradient(135deg, rgba(8, 10, 21, 0.82), rgba(22, 15, 101, 0.58) 48%, rgba(8, 10, 21, 0.64)),
+            #080a15;
         }
 
         .hero-media video {
-          opacity: 0.95;
+          opacity: 0.84;
         }
 
         .hero-media::after {
           background:
-            linear-gradient(180deg, rgba(8, 10, 21, 0.62), rgba(22, 15, 101, 0.26) 46%, rgba(8, 10, 21, 0.66)),
-            linear-gradient(90deg, rgba(8, 10, 21, 0.58), rgba(8, 10, 21, 0.2) 54%, rgba(22, 15, 101, 0.16));
+            linear-gradient(180deg, rgba(8, 10, 21, 0.72), rgba(22, 15, 101, 0.48) 46%, rgba(8, 10, 21, 0.74)),
+            linear-gradient(90deg, rgba(22, 15, 101, 0.66), rgba(8, 10, 21, 0.25) 56%, rgba(22, 15, 101, 0.28));
         }
 
         .hero-copy {
+          min-width: 0;
           width: 100%;
           max-width: 100%;
           padding-top: 0.4rem;
         }
 
-        .hero-copy .eyebrow {
-          color: rgba(255, 255, 255, 0.82);
-          text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+        .hero-eyebrow-pill {
+          color: var(--brand);
+          background: rgba(255, 255, 255, 0.84);
+          padding: 7px 9px;
+          font-size: 0.64rem;
+          line-height: 1.25;
+          text-shadow: none;
         }
 
         h1 {
           color: #ffffff;
-          font-size: clamp(1.78rem, 8.4vw, 2.35rem);
+          max-width: min(100%, 305px);
+          font-size: clamp(1.58rem, 7vw, 1.95rem);
           line-height: 1.08;
+          overflow-wrap: break-word;
           text-shadow: 0 14px 34px rgba(0, 0, 0, 0.42);
         }
 
         .hero-copy p:last-of-type {
+          max-width: min(100%, 310px);
           color: rgba(255, 255, 255, 0.84);
           text-shadow: 0 10px 26px rgba(0, 0, 0, 0.42);
         }
@@ -880,6 +925,13 @@
           background: rgba(255, 255, 255, 0.22);
           color: #ffffff;
           backdrop-filter: blur(8px);
+        }
+
+        .hero .actions a,
+        .hero-panel,
+        .section-cta {
+          width: 100%;
+          max-width: 100%;
         }
 
         h2 {
@@ -907,6 +959,26 @@
         .process-card.is-active {
           opacity: 1;
           transform: scale(1);
+        }
+
+        .desktop-process-cta {
+          display: none;
+        }
+
+        .mobile-section-cta {
+          display: inline-flex;
+        }
+
+        .reasons-cta {
+          display: inline-flex;
+        }
+
+        .image-frame {
+          min-height: 318px;
+        }
+
+        .image-frame img {
+          object-position: 70% center;
         }
 
         footer {
@@ -948,13 +1020,13 @@
         </div>
         <div class="container hero-grid">
           <div class="hero-copy">
-            <p class="eyebrow">Despachos aduaneiros desde 1998</p>
+            <p class="eyebrow hero-eyebrow-pill">Despachos aduaneiros desde 1998</p>
             <h1>Mercadoria retida? A burocracia está travando sua operação?</h1>
             <p>
               A Millenium cuida do desembaraço aduaneiro na importação e exportação, orientando documentos, riscos, regimes especiais e logística para sua carga seguir com segurança.
             </p>
             <div class="actions">
-              <a class="primary" href="#contato">Fale com especialista</a>
+              <a class="primary hero-primary" href="#contato">Fale com especialista</a>
               <a class="secondary" href="#servicos">Ver serviços</a>
             </div>
           </div>
@@ -993,9 +1065,9 @@
             <h2>Experiência, agilidade e segurança para operações internacionais.</h2>
             <p>Desde 1998, a Millenium Despachos Aduaneiros une domínio técnico, transparência e acompanhamento próximo para que empresas importem e exportem com mais segurança.</p>
             <div class="stats">
-              <div><strong class="count-up" data-count="27">+27</strong><span>anos de experiência</span></div>
-              <div><strong class="count-up" data-count="500">+500</strong><span>empresas atendidas</span></div>
-              <div><strong class="count-up" data-count="3">+3</strong><span>frentes de atuação</span></div>
+              <div><strong class="count-up" data-count="27">+0</strong><span>anos de experiência</span></div>
+              <div><strong class="count-up" data-count="500">+0</strong><span>empresas atendidas</span></div>
+              <div><strong class="count-up" data-count="3">+0</strong><span>frentes de atuação</span></div>
             </div>
           </div>
         </div>
@@ -1007,16 +1079,18 @@
             <p class="eyebrow">Como trabalhamos</p>
             <h2>Entenda nosso processo.</h2>
             <p>Uma condução clara para que prazo, documentação e risco não virem surpresa no meio da operação.</p>
+            <a class="dark section-cta desktop-process-cta" href="#contato">Solicitar análise</a>
           </div>
           <div class="process-stack">
             <article class="process-card is-active"><span class="num">01</span><div><h3>Tenha uma análise</h3><p>Entendemos sua mercadoria, documentos, prazo e possíveis riscos antes de iniciar o processo.</p></div></article>
             <article class="process-card"><span class="num">02</span><div><h3>Organize a operação</h3><p>Definimos o melhor caminho aduaneiro, fiscal e logístico para evitar retrabalho e exigências.</p></div></article>
             <article class="process-card"><span class="num">03</span><div><h3>Receba com segurança</h3><p>Acompanhamos desembaraço, parceiros logísticos, liberação e entrega com comunicação próxima.</p></div></article>
           </div>
+          <a class="secondary section-cta mobile-section-cta" href="#contato">Fale com especialista</a>
         </div>
       </section>
 
-      <section class="timeline-wrap">
+      <section>
         <div class="container">
           <div class="section-head">
             <p class="eyebrow">Por que escolher</p>
@@ -1028,10 +1102,11 @@
             <article class="reason"><h3>Equipe experiente</h3><p>Atuação desde 1998 em importação, exportação e regimes especiais.</p></article>
             <article class="reason"><h3>Processo acompanhado</h3><p>Feedback sobre a operação para reduzir incerteza e tomada de decisão no escuro.</p></article>
           </div>
+          <a class="dark section-cta reasons-cta" href="#contato">Quero reduzir riscos da operação</a>
         </div>
       </section>
 
-      <section>
+      <section class="timeline-wrap">
         <div class="container">
           <div class="section-head">
             <p class="eyebrow">História da Millenium</p>
@@ -1043,6 +1118,7 @@
             <article class="timeline-item"><strong>2020</strong><p>Atendimento remoto estruturado para manter agilidade e continuidade na operação.</p></article>
             <article class="timeline-item"><strong>2024</strong><p>Renovação da experiência para elevar clareza, serviço e relacionamento.</p></article>
           </div>
+          <a class="secondary section-cta mobile-section-cta" href="#contato">Falar com a Millenium</a>
         </div>
       </section>
 
@@ -1138,7 +1214,7 @@
           runCounter(entry.target);
           observer.unobserve(entry.target);
         });
-      }, { threshold: 0.35 });
+      }, { rootMargin: "0px 0px -12% 0px", threshold: 0.35 });
 
       counters.forEach((counter) => counterObserver.observe(counter));
     </script>

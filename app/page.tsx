@@ -117,25 +117,55 @@ function clamp(value: number, min = 0, max = 1) {
 
 function CountUp({ value, suffix = "" }: { value: number; suffix?: string }) {
   const [count, setCount] = useState(0);
+  const [hasStarted, setHasStarted] = useState(false);
+  const counterRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
+    if (hasStarted) return;
+
+    const node = counterRef.current;
+    if (!node) return;
+
     let frame = 0;
+    let animationFrame = 0;
     const totalFrames = 58;
+
     const tick = () => {
       frame += 1;
       const progress = 1 - Math.pow(1 - frame / totalFrames, 3);
       setCount(Math.round(value * progress));
       if (frame < totalFrames) {
-        window.requestAnimationFrame(tick);
+        animationFrame = window.requestAnimationFrame(tick);
       }
     };
 
-    const request = window.requestAnimationFrame(tick);
-    return () => window.cancelAnimationFrame(request);
-  }, [value]);
+    const start = () => {
+      setHasStarted(true);
+      animationFrame = window.requestAnimationFrame(tick);
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          observer.disconnect();
+          start();
+        }
+      },
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.35 },
+    );
+
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+      if (animationFrame) {
+        window.cancelAnimationFrame(animationFrame);
+      }
+    };
+  }, [hasStarted, value]);
 
   return (
-    <strong>
+    <strong ref={counterRef}>
       +{count}
       {suffix}
     </strong>
@@ -204,13 +234,13 @@ export default function Home() {
 
         <div className="mx-auto grid min-h-screen max-w-7xl items-center gap-10 px-5 pb-12 pt-28 sm:px-8 lg:grid-cols-[1fr_0.9fr] lg:px-14">
           <div className="hero-copy">
-            <p className="eyebrow">Despachos aduaneiros desde 1998</p>
+            <p className="eyebrow hero-eyebrow-pill">Despachos aduaneiros desde 1998</p>
             <h1>Mercadoria retida? A burocracia está travando sua operação?</h1>
             <p>
               A Millenium cuida do desembaraço aduaneiro na importação e exportação, orientando documentos, riscos, regimes especiais e logística para sua carga seguir com segurança.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href="#contato" className="primary-action">
+            <div className="hero-actions mt-8 flex flex-col gap-3 sm:flex-row">
+              <a href="#contato" className="primary-action hero-primary-action">
                 Fale com especialista
                 <ArrowRight className="size-4" />
               </a>
@@ -286,6 +316,10 @@ export default function Home() {
             <p>
               Uma condução clara para que prazo, documentação e risco não virem surpresa no meio da operação.
             </p>
+            <a href="#contato" className="dark-action section-cta desktop-process-cta">
+              Solicitar análise
+              <ArrowRight className="size-4" />
+            </a>
           </div>
 
           <div className="process-stack">
@@ -302,6 +336,10 @@ export default function Home() {
               );
             })}
           </div>
+          <a href="#contato" className="light-action section-cta mobile-section-cta">
+            Fale com especialista
+            <ArrowRight className="size-4" />
+          </a>
         </div>
       </section>
 
@@ -321,6 +359,10 @@ export default function Home() {
               </article>
             ))}
           </div>
+          <a href="#contato" className="dark-action section-cta reasons-cta">
+            Quero reduzir riscos da operação
+            <ArrowRight className="size-4" />
+          </a>
         </div>
       </section>
 
@@ -338,6 +380,10 @@ export default function Home() {
               </article>
             ))}
           </div>
+          <a href="#contato" className="light-action section-cta mobile-section-cta">
+            Falar com a Millenium
+            <ArrowRight className="size-4" />
+          </a>
         </div>
       </section>
 
