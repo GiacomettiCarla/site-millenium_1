@@ -75,7 +75,7 @@ const reasons = [
 const timeline = [
   ["1998", "Fundação da Millenium por Evaldo Sérgio dos Santos."],
   ["2015", "Crescimento nacional e especialização em bagagem desacompanhada."],
-  ["2020", "Operação 100% remota com agilidade e continuidade no atendimento."],
+  ["2020", "Atendimento remoto estruturado para manter agilidade e continuidade na operação."],
   ["2024", "Renovação da experiência para elevar clareza, serviço e relacionamento."],
 ];
 
@@ -239,7 +239,7 @@ export default function Home() {
             </p>
             <div className="stat-row">
               <div><strong>1998</strong><span>fundação</span></div>
-              <div><strong>100%</strong><span>home office</span></div>
+              <div><strong>Online</strong><span>atendimento remoto</span></div>
               <div><strong>BR</strong><span>atendimento</span></div>
             </div>
           </div>
