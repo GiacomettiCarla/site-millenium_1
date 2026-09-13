@@ -1,23 +1,22 @@
 "use client";
 
 import {
+  Anchor,
   ArrowRight,
   BadgeCheck,
   Boxes,
   BriefcaseBusiness,
   CheckCircle2,
-  ClipboardCheck,
-  FileCheck2,
   FileSearch,
-  Globe2,
   Mail,
   MapPinned,
+  PackageCheck,
+  Plane,
   Radar,
   Route,
   ShieldCheck,
   Ship,
   TimerReset,
-  TrendingUp,
 } from "lucide-react";
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
@@ -34,17 +33,17 @@ const navItems = [
 
 const quickServices: Array<{ icon: IconType; title: string; text: string }> = [
   {
-    icon: Ship,
+    icon: Anchor,
     title: "Importação",
     text: "Desembaraço aduaneiro, conferência documental e orientação para reduzir atrasos na chegada da carga.",
   },
   {
-    icon: Globe2,
+    icon: Plane,
     title: "Exportação",
     text: "Apoio no trâmite de documentos e condução das etapas necessárias para sua operação sair com segurança.",
   },
   {
-    icon: ClipboardCheck,
+    icon: FileSearch,
     title: "Comércio exterior",
     text: "Assessoria para regimes especiais, Drawback, Admissão Temporária, Consumo de Bordo e consultoria aduaneira.",
   },
@@ -52,24 +51,27 @@ const quickServices: Array<{ icon: IconType; title: string; text: string }> = [
 
 const processSteps = [
   {
+    icon: FileSearch,
     title: "Tenha uma análise",
     text: "Entendemos sua mercadoria, documentos, prazo e possíveis riscos antes de iniciar o processo.",
   },
   {
+    icon: Route,
     title: "Organize a operação",
     text: "Definimos o melhor caminho aduaneiro, fiscal e logístico para evitar retrabalho e exigências.",
   },
   {
+    icon: PackageCheck,
     title: "Receba com segurança",
     text: "Acompanhamos desembaraço, parceiros logísticos, liberação e entrega com comunicação próxima.",
   },
 ];
 
 const reasons = [
-  ["Segurança no trâmite", "Cuidado técnico em cada etapa do processo aduaneiro.", ShieldCheck],
-  ["Atendimento próximo", "Contato direto para acompanhar dúvidas, documentos e prazos.", Mail],
-  ["Equipe experiente", "Atuação desde 1998 em importação, exportação e regimes especiais.", BadgeCheck],
-  ["Processo acompanhado", "Feedback sobre a operação para reduzir incerteza e tomada de decisão no escuro.", Radar],
+  ["Conformidade aduaneira", "Cuidado técnico em cada etapa do processo aduaneiro.", ShieldCheck],
+  ["Resposta próxima", "Contato direto para acompanhar dúvidas, documentos e prazos.", Mail],
+  ["Experiência desde 1998", "Atuação em importação, exportação e regimes especiais.", BadgeCheck],
+  ["Prazos acompanhados", "Visibilidade sobre etapas críticas para reduzir decisões no escuro.", TimerReset],
 ] as const;
 
 const timeline = [
@@ -137,22 +139,22 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <div className="fixed inset-x-0 top-0 z-50 h-1 bg-white/10">
+      <div className="fixed inset-x-0 top-0 z-50 h-1 bg-black/10">
         <div className="h-full bg-[var(--signal)] transition-all duration-150" style={{ width: `${pageProgress * 100}%` }} />
       </div>
 
-      <header className="fixed left-1/2 top-4 z-40 flex w-[min(1160px,calc(100%-28px))] -translate-x-1/2 items-center justify-between border border-white/12 bg-[rgba(4,14,25,0.74)] px-4 py-3 shadow-2xl shadow-black/25 backdrop-blur-xl">
+      <header className="site-header fixed left-1/2 top-4 z-40 flex w-[min(1160px,calc(100%-28px))] -translate-x-1/2 items-center justify-between px-4 py-3">
         <a href="#inicio" className="flex items-center gap-3" aria-label="Millenium Despachos Aduaneiros">
-          <img src="/millenium-logo.png" alt="Millenium Despachos Aduaneiros" className="header-logo" />
+          <img src="/millenium-logo.webp" alt="Millenium Despachos Aduaneiros" className="header-logo" />
         </a>
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Navegação principal">
           {navItems.map(([label, id]) => (
-            <a key={id} href={`#${id}`} className="px-3 py-2 text-[0.68rem] font-bold uppercase tracking-[0.12em] text-white/58 transition hover:text-white">
+            <a key={id} href={`#${id}`} className="px-3 py-2 text-[0.68rem] font-bold uppercase tracking-[0.12em] transition">
               {label}
             </a>
           ))}
         </nav>
-        <a href="mailto:millenium.desp@uol.com.br" className="inline-flex items-center gap-2 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.1em] text-slate-950 transition hover:bg-[var(--signal)]">
+        <a href="mailto:millenium.desp@uol.com.br" className="header-action inline-flex items-center gap-2 px-4 py-2 text-xs font-black uppercase tracking-[0.1em] transition">
           Fale conosco
           <ArrowRight className="size-4" />
         </a>
@@ -201,7 +203,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="servicos" className="section-pad">
+      <section id="servicos" className="section-pad light-section">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-14">
           <div className="section-heading">
             <p className="eyebrow">Serviços</p>
@@ -226,7 +228,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="sobre" className="split-section">
+      <section id="sobre" className="split-section light-section">
         <div className="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:px-14">
           <div className="image-frame">
             <img src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?auto=format&fit=crop&q=74&w=1800" alt="Containers em operação logística internacional" />
@@ -240,7 +242,7 @@ export default function Home() {
             <div className="stat-row">
               <div><strong>1998</strong><span>fundação</span></div>
               <div><strong>Online</strong><span>atendimento remoto</span></div>
-              <div><strong>BR</strong><span>atendimento</span></div>
+              <div><strong>Brasil</strong><span>atendimento</span></div>
             </div>
           </div>
         </div>
@@ -257,20 +259,23 @@ export default function Home() {
           </div>
 
           <div className="process-stack">
-            {processSteps.map((step, index) => (
+            {processSteps.map((step, index) => {
+              const Icon = step.icon;
+              return (
               <article key={step.title} className={`process-card ${index <= activeStep ? "is-active" : ""}`}>
-                <span>0{index + 1}</span>
+                <span><Icon className="size-5" /></span>
                 <div>
                   <h3>{step.title}</h3>
                   <p>{step.text}</p>
                 </div>
               </article>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
-      <section className="section-pad">
+      <section className="section-pad brand-section">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-14">
           <div className="section-heading">
             <p className="eyebrow">Por que escolher</p>
