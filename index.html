@@ -167,19 +167,18 @@
         overflow: hidden;
         background:
           linear-gradient(90deg, rgba(246, 248, 251, 0.98), rgba(246, 248, 251, 0.82) 38%, rgba(22, 15, 101, 0.46)),
-          url("https://img.youtube.com/vi/8G7f9GgP6CI/maxresdefault.jpg") center / cover;
+          #f6f8fb;
       }
 
-      .hero-media iframe {
+      .hero-media video {
         position: absolute;
-        top: 50%;
-        left: 50%;
-        width: max(100vw, 177.78vh);
-        height: max(56.25vw, 100vh);
+        inset: 0;
+        width: 100%;
+        height: 100%;
         border: 0;
-        opacity: 0.46;
+        object-fit: cover;
+        opacity: 0.5;
         pointer-events: none;
-        transform: translate(-50%, -50%);
       }
 
       .hero-media::after {
@@ -812,13 +811,16 @@
     <main>
       <section id="inicio" class="hero">
         <div class="hero-media">
-          <iframe
-            src="https://www.youtube.com/embed/8G7f9GgP6CI?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=8G7f9GgP6CI&start=46&modestbranding=1&rel=0&disablekb=1&fs=0&iv_load_policy=3"
-            title="Video institucional Millenium"
-            allow="autoplay; encrypted-media; picture-in-picture"
-            tabindex="-1"
+          <video
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
             aria-hidden="true"
-          ></iframe>
+          >
+            <source src="public/hero-video.mp4" type="video/mp4" />
+          </video>
         </div>
         <div class="container hero-grid">
           <div class="hero-copy">
