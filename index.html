@@ -155,6 +155,14 @@
         cursor: pointer;
       }
 
+      .process .section-cta,
+      .timeline-wrap .section-cta {
+        border-color: rgba(255, 255, 255, 0.92);
+        background: rgba(255, 255, 255, 0.96);
+        color: var(--brand);
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+      }
+
       .header-cta:hover,
       .primary:hover,
       .secondary:hover,
@@ -483,7 +491,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        object-position: center;
+        object-position: 58% center;
       }
 
       .about-copy {
@@ -518,6 +526,7 @@
         font-size: 0.78rem;
         font-weight: 800;
         letter-spacing: 0.12em;
+        line-height: 1.35;
         text-transform: uppercase;
       }
 
@@ -638,6 +647,10 @@
         display: grid;
         gap: 16px;
         margin-top: 32px;
+      }
+
+      .mobile-contact-list {
+        display: none;
       }
 
       .contact-line {
@@ -954,6 +967,13 @@
           transform: scale(1);
         }
 
+        .process .section-cta,
+        .timeline-wrap .section-cta {
+          border-color: rgba(255, 255, 255, 0.96);
+          background: #ffffff;
+          color: var(--brand);
+        }
+
         .desktop-process-cta {
           display: none;
         }
@@ -971,7 +991,30 @@
         }
 
         .image-frame img {
-          object-position: 70% center;
+          object-position: 76% center;
+        }
+
+        .form-shell,
+        details {
+          background: #ffffff;
+          opacity: 1;
+          animation: none;
+        }
+
+        form {
+          background: var(--brand);
+          opacity: 1;
+        }
+
+        .form-copy .contact-list {
+          display: none;
+        }
+
+        .mobile-contact-list {
+          display: grid;
+          order: 3;
+          margin: 0;
+          padding: 0 clamp(2rem, 4vw, 3.5rem) clamp(2rem, 4vw, 3.5rem);
         }
 
         footer {
@@ -1058,9 +1101,9 @@
             <h2>Experiência, agilidade e segurança para operações internacionais.</h2>
             <p>Desde 1998, a Millenium Despachos Aduaneiros une domínio técnico, transparência e acompanhamento próximo para que empresas importem e exportem com mais segurança.</p>
             <div class="stats">
-              <div><strong class="count-up" data-count="27">+0</strong><span>anos de experiência</span></div>
-              <div><strong class="count-up" data-count="500">+0</strong><span>empresas atendidas</span></div>
-              <div><strong class="count-up" data-count="3">+0</strong><span>frentes de atuação</span></div>
+              <div><strong class="count-up" data-count="27">+0</strong><span>anos de<br />experiência</span></div>
+              <div><strong class="count-up" data-count="500">+0</strong><span>empresas<br />atendidas</span></div>
+              <div><strong class="count-up" data-count="3">+0</strong><span>frentes<br />de atuação</span></div>
             </div>
           </div>
         </div>
@@ -1139,6 +1182,12 @@
               <label class="full">Conte um pouco sobre sua demanda<textarea name="mensagem" placeholder="Informe origem, destino, mercadoria, etapa atual e documentos que já possui." rows="5" required></textarea></label>
               <button class="dark" type="submit">Solicitar análise</button>
             </form>
+            <div class="contact-list mobile-contact-list">
+              <div class="contact-line">millenium.desp@uol.com.br</div>
+              <div class="contact-line">sergio.mille@uol.com.br</div>
+              <div class="contact-line">imp.mille@uol.com.br</div>
+              <div class="contact-line">Atendimento nacional</div>
+            </div>
           </div>
 
           <div class="faq">
@@ -1187,6 +1236,8 @@
       window.addEventListener("scroll", onScroll, { passive: true });
 
       const runCounter = (counter) => {
+        if (counter.dataset.started === "true") return;
+        counter.dataset.started = "true";
         const target = Number(counter.dataset.count || 0);
         let frame = 0;
         const totalFrames = 58;
@@ -1201,15 +1252,28 @@
         requestAnimationFrame(tick);
       };
 
+      const checkCounters = () => {
+        counters.forEach((counter) => {
+          if (counter.dataset.started === "true") return;
+          const rect = counter.getBoundingClientRect();
+          if (rect.top < window.innerHeight * 0.86 && rect.bottom > 0) {
+            runCounter(counter);
+          }
+        });
+      };
+
       const counterObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
           runCounter(entry.target);
           observer.unobserve(entry.target);
         });
-      }, { rootMargin: "0px 0px -12% 0px", threshold: 0.35 });
+      }, { rootMargin: "0px 0px -8% 0px", threshold: 0.2 });
 
       counters.forEach((counter) => counterObserver.observe(counter));
+      checkCounters();
+      window.addEventListener("scroll", checkCounters, { passive: true });
+      window.addEventListener("resize", checkCounters);
     </script>
   </body>
 </html>

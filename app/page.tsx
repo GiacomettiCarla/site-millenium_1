@@ -117,12 +117,10 @@ function clamp(value: number, min = 0, max = 1) {
 
 function CountUp({ value, suffix = "" }: { value: number; suffix?: string }) {
   const [count, setCount] = useState(0);
-  const [hasStarted, setHasStarted] = useState(false);
   const counterRef = useRef<HTMLElement | null>(null);
+  const hasStartedRef = useRef(false);
 
   useEffect(() => {
-    if (hasStarted) return;
-
     const node = counterRef.current;
     if (!node) return;
 
@@ -140,8 +138,16 @@ function CountUp({ value, suffix = "" }: { value: number; suffix?: string }) {
     };
 
     const start = () => {
-      setHasStarted(true);
+      if (hasStartedRef.current) return;
+      hasStartedRef.current = true;
       animationFrame = window.requestAnimationFrame(tick);
+    };
+
+    const checkVisibility = () => {
+      const rect = node.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.86 && rect.bottom > 0) {
+        start();
+      }
     };
 
     const observer = new IntersectionObserver(
@@ -151,18 +157,23 @@ function CountUp({ value, suffix = "" }: { value: number; suffix?: string }) {
           start();
         }
       },
-      { rootMargin: "0px 0px -12% 0px", threshold: 0.35 },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.2 },
     );
 
     observer.observe(node);
+    checkVisibility();
+    window.addEventListener("scroll", checkVisibility, { passive: true });
+    window.addEventListener("resize", checkVisibility);
 
     return () => {
       observer.disconnect();
+      window.removeEventListener("scroll", checkVisibility);
+      window.removeEventListener("resize", checkVisibility);
       if (animationFrame) {
         window.cancelAnimationFrame(animationFrame);
       }
     };
-  }, [hasStarted, value]);
+  }, [value]);
 
   return (
     <strong ref={counterRef}>
@@ -300,9 +311,9 @@ export default function Home() {
               Desde 1998, a Millenium Despachos Aduaneiros une domínio técnico, transparência e acompanhamento próximo para que empresas importem e exportem com mais segurança.
             </p>
             <div className="stat-row">
-              <div><CountUp value={27} /><span>anos de experiência</span></div>
-              <div><CountUp value={500} /><span>empresas atendidas</span></div>
-              <div><CountUp value={3} /><span>frentes de atuação</span></div>
+              <div><CountUp value={27} /><span>anos de<br />experiência</span></div>
+              <div><CountUp value={500} /><span>empresas<br />atendidas</span></div>
+              <div><CountUp value={3} /><span>frentes<br />de atuação</span></div>
             </div>
           </div>
         </div>
@@ -458,6 +469,15 @@ export default function Home() {
                 <ArrowRight className="size-4" />
               </button>
             </form>
+
+            <div className="contact-list mobile-contact-list">
+              {contacts.map(([label, Icon]) => (
+                <div key={label}>
+                  <Icon className="size-5 text-[var(--signal)]" />
+                  <span>{label}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="faq-block">

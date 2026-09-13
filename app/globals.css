@@ -291,6 +291,14 @@ body {
   color: var(--brand);
 }
 
+.process-cinema .section-cta,
+.timeline-section .section-cta {
+  border-color: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--brand);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+}
+
 .primary-action:hover,
 .secondary-action:hover,
 .dark-action:hover,
@@ -518,7 +526,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: 58% center;
 }
 
 .about-copy {
@@ -552,6 +560,7 @@ body {
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.12em;
+  line-height: 1.35;
   text-transform: uppercase;
 }
 
@@ -697,6 +706,10 @@ body {
   display: grid;
   gap: 16px;
   margin-top: 32px;
+}
+
+.mobile-contact-list {
+  display: none;
 }
 
 .contact-list div {
@@ -1055,6 +1068,13 @@ body {
     transform: scale(1);
   }
 
+  .process-cinema .section-cta,
+  .timeline-section .section-cta {
+    border-color: rgba(255, 255, 255, 0.96);
+    background: #ffffff;
+    color: var(--brand);
+  }
+
   .desktop-process-cta {
     display: none;
   }
@@ -1072,7 +1092,30 @@ body {
   }
 
   .image-frame img {
-    object-position: 70% center;
+    object-position: 76% center;
+  }
+
+  .form-shell,
+  .faq-item {
+    background: #ffffff;
+    opacity: 1;
+    animation: none;
+  }
+
+  .lead-form {
+    background: var(--brand);
+    opacity: 1;
+  }
+
+  .form-copy .contact-list {
+    display: none;
+  }
+
+  .mobile-contact-list {
+    display: grid;
+    order: 3;
+    margin: 0;
+    padding: 0 clamp(2rem, 4vw, 3.5rem) clamp(2rem, 4vw, 3.5rem);
   }
 
   .section-pad,
