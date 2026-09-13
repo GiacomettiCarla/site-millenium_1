@@ -162,14 +162,17 @@ export default function Home() {
 
       <section id="inicio" className="hero-section">
         <div className="hero-media">
-          <iframe
-            className="hero-youtube"
-            src="https://www.youtube.com/embed/8G7f9GgP6CI?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=8G7f9GgP6CI&start=46&modestbranding=1&rel=0&disablekb=1&fs=0&iv_load_policy=3"
-            title="Vídeo institucional Millenium"
-            allow="autoplay; encrypted-media; picture-in-picture"
+          <video
+            className="hero-video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
             aria-hidden="true"
-            tabIndex={-1}
-          />
+          >
+            <source src="/hero-video.mp4" type="video/mp4" />
+          </video>
         </div>
 
         <div className="mx-auto grid min-h-screen max-w-7xl items-center gap-10 px-5 pb-12 pt-28 sm:px-8 lg:grid-cols-[1fr_0.9fr] lg:px-14">
