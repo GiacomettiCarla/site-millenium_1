@@ -790,27 +790,83 @@
       @media (max-width: 640px) {
         header {
           width: calc(100% - 20px);
-          padding: 10px;
+          justify-content: center;
+          padding: 12px 18px;
         }
 
         .header-logo {
-          height: 28px;
-          max-width: 150px;
+          height: 34px;
+          max-width: 190px;
         }
 
         .header-cta {
-          min-height: 36px;
-          padding: 0 12px;
-          font-size: 0.64rem;
+          display: none;
         }
 
         .container {
           padding: 0 20px;
         }
 
+        .hero {
+          min-height: 100svh;
+          color: #ffffff;
+        }
+
+        .hero-grid {
+          min-height: 100svh;
+          align-items: start;
+          padding-top: 4.85rem;
+        }
+
+        .hero-media {
+          background:
+            linear-gradient(135deg, rgba(12, 12, 26, 0.38), rgba(38, 39, 52, 0.24) 48%, rgba(22, 15, 101, 0.18)),
+            #171827;
+        }
+
+        .hero-media video {
+          opacity: 0.95;
+        }
+
+        .hero-media::after {
+          background:
+            linear-gradient(180deg, rgba(11, 12, 24, 0.34), rgba(22, 15, 101, 0.12) 46%, rgba(11, 12, 24, 0.44)),
+            linear-gradient(90deg, rgba(232, 236, 244, 0.14), rgba(232, 236, 244, 0.04) 54%, rgba(22, 15, 101, 0.12));
+        }
+
+        .hero-copy {
+          margin-top: 0.2rem;
+          margin-right: -2px;
+          margin-left: -2px;
+          border: 1px solid rgba(255, 255, 255, 0.42);
+          background: rgba(238, 241, 247, 0.78);
+          padding: 1.05rem 0.95rem 1.15rem;
+          box-shadow: 0 24px 70px rgba(4, 8, 22, 0.22);
+          backdrop-filter: blur(10px);
+        }
+
+        .hero-copy .eyebrow {
+          color: rgba(22, 15, 101, 0.78);
+          text-shadow: none;
+        }
+
         h1 {
+          color: #160f65;
           font-size: clamp(1.78rem, 8.4vw, 2.35rem);
           line-height: 1.08;
+          text-shadow: none;
+        }
+
+        .hero-copy p:last-of-type {
+          color: rgba(35, 42, 60, 0.88);
+          text-shadow: none;
+        }
+
+        .secondary {
+          border-color: rgba(22, 15, 101, 0.22);
+          background: rgba(255, 255, 255, 0.35);
+          color: var(--brand);
+          backdrop-filter: blur(8px);
         }
 
         h2 {
