@@ -201,6 +201,7 @@ export default function Home() {
     formData.append("_subject", "Novo lead! Novo formulário preenchido no site");
     formData.append("_template", "table");
     formData.append("_captcha", "false");
+    formData.append("_cc", "carlalaisstudy@gmail.com");
     formData.append("_replyto", String(formData.get("email") || ""));
 
     try {
@@ -463,6 +464,7 @@ export default function Home() {
               <input type="hidden" name="_subject" value="Novo lead! Novo formulário preenchido no site" />
               <input type="hidden" name="_template" value="table" />
               <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="_cc" value="carlalaisstudy@gmail.com" />
               <label>
                 Nome
                 <input name="nome" type="text" placeholder="Seu nome" required />
