@@ -374,9 +374,12 @@
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
-      .reasons,
-      .timeline {
+      .reasons {
         grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .timeline {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
       }
 
       .card,
@@ -395,7 +398,7 @@
           background 360ms ease;
         animation: reveal linear both;
         animation-timeline: view();
-        animation-range: entry 8% cover 35%;
+        animation-range: entry 0% cover 24%;
       }
 
       .card {
@@ -566,16 +569,14 @@
         display: grid;
         grid-template-columns: 54px minmax(0, 1fr);
         gap: 20px;
-        opacity: 0.48;
-        transform: translateX(18px);
-        transition: opacity 240ms ease, transform 240ms ease, border-color 240ms ease, background 240ms ease;
+        background: linear-gradient(90deg, rgba(67, 207, 216, calc(0.03 + (var(--step-progress, 0) * 0.1))), rgba(255, 255, 255, 0.045)), rgba(255, 255, 255, 0.05);
+        opacity: calc(0.52 + (var(--step-progress, 0) * 0.48));
+        transform: translateY(calc((1 - var(--step-progress, 0)) * 42px)) scale(calc(0.965 + (var(--step-progress, 0) * 0.035)));
+        transition: opacity 120ms linear, transform 120ms linear, border-color 120ms linear, background 120ms linear;
       }
 
       .process-card.is-active {
-        opacity: 1;
-        transform: translateX(0);
         border-color: rgba(67, 207, 216, 0.46);
-        background: linear-gradient(90deg, rgba(67, 207, 216, 0.13), rgba(255, 255, 255, 0.045)), rgba(255, 255, 255, 0.035);
       }
 
       .process-card .num {
@@ -626,9 +627,6 @@
         overflow: hidden;
         background: white;
         color: var(--brand);
-        animation: reveal linear both;
-        animation-timeline: view();
-        animation-range: entry 6% cover 32%;
       }
 
       .form-copy {
@@ -750,9 +748,14 @@
         border: 1px solid rgba(22, 15, 101, 0.12);
         background: white;
         color: var(--text);
-        animation: reveal linear both;
-        animation-timeline: view();
-        animation-range: entry 8% cover 34%;
+        transition: background 320ms ease, border-color 320ms ease, box-shadow 320ms ease, transform 320ms ease;
+      }
+
+      details:hover,
+      details[open] {
+        border-color: rgba(22, 15, 101, 0.26);
+        box-shadow: 0 18px 52px rgba(22, 15, 101, 0.08);
+        transform: translateY(-2px);
       }
 
       summary {
@@ -786,6 +789,7 @@
         padding: 0 28px 26px;
         color: #465064;
         line-height: 1.7;
+        animation: faq-answer 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
       }
 
       footer {
@@ -811,8 +815,20 @@
 
       @keyframes reveal {
         from {
+          opacity: 0.82;
+          transform: translateY(48px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes faq-answer {
+        from {
           opacity: 0;
-          transform: translateY(38px);
+          transform: translateY(-10px);
         }
 
         to {
@@ -996,14 +1012,13 @@
 
         .process-card {
           grid-template-columns: 1fr;
-          opacity: 0.58;
-          transform: scale(0.94);
+          opacity: calc(0.62 + (var(--step-progress, 0) * 0.38));
+          transform: translateY(calc((1 - var(--step-progress, 0)) * 28px)) scale(calc(0.94 + (var(--step-progress, 0) * 0.06)));
           transform-origin: center;
         }
 
         .process-card.is-active {
-          opacity: 1;
-          transform: scale(1);
+          border-color: rgba(67, 207, 216, 0.56);
         }
 
         .process .section-cta,
@@ -1129,9 +1144,9 @@
             <p>Do primeiro documento à liberação da mercadoria, a Millenium auxilia empresas que precisam importar, exportar e operar com mais previsibilidade.</p>
           </div>
           <div class="cards">
-            <article class="card"><div class="icon-box">01</div><h3>Importação</h3><p>Desembaraço aduaneiro, conferência documental e orientação para reduzir atrasos na chegada da carga.</p></article>
-            <article class="card"><div class="icon-box">02</div><h3>Exportação</h3><p>Apoio no trâmite de documentos e condução das etapas necessárias para sua operação sair com segurança.</p></article>
-            <article class="card"><div class="icon-box">03</div><h3>Comércio exterior</h3><p>Assessoria para regimes especiais, Drawback, Admissão Temporária, Consumo de Bordo e consultoria aduaneira.</p></article>
+            <article class="card"><div class="icon-box">01</div><h3>Importação</h3><p>Assessoria completa para desembaraço, nacionalização e acompanhamento das etapas críticas da chegada da carga.</p></article>
+            <article class="card"><div class="icon-box">02</div><h3>Exportação</h3><p>Análise documental e suporte ao despacho aduaneiro para sua operação sair do país com clareza e segurança.</p></article>
+            <article class="card"><div class="icon-box">03</div><h3>Operações especiais</h3><p>Apoio em Drawback, Admissão Temporária, Entreposto Aduaneiro, classificação fiscal, licenças e consultoria aduaneira.</p></article>
           </div>
         </div>
       </section>
@@ -1198,6 +1213,7 @@
             <article class="timeline-item"><strong>2015</strong><p>Crescimento nacional e especialização em bagagem desacompanhada.</p></article>
             <article class="timeline-item"><strong>2020</strong><p>Atendimento remoto estruturado para manter agilidade e continuidade na operação.</p></article>
             <article class="timeline-item"><strong>2024</strong><p>Renovação da experiência para elevar clareza, serviço e relacionamento.</p></article>
+            <article class="timeline-item"><strong>2026</strong><p>Evolução contínua de processos, sistemas e parcerias para acompanhar o mercado global.</p></article>
           </div>
           <a class="secondary section-cta mobile-section-cta" href="#contato">Falar com a Millenium</a>
         </div>
@@ -1267,6 +1283,7 @@
       const processCards = Array.from(document.querySelectorAll(".process-card"));
       const counters = Array.from(document.querySelectorAll(".count-up"));
       const leadForm = document.querySelector("#lead-form");
+      const faqItems = Array.from(document.querySelectorAll(".faq-list details"));
       const leadFormEndpoint = "https://formsubmit.co/ajax/Millenium.desp@uol.com.br";
 
       function clamp(value, min = 0, max = 1) {
@@ -1281,7 +1298,11 @@
         const distance = Math.max(1, processSection.offsetHeight - window.innerHeight);
         const sectionProgress = clamp((window.scrollY - processSection.offsetTop) / distance);
         const active = Math.min(processCards.length - 1, Math.floor(sectionProgress * processCards.length));
-        processCards.forEach((card, index) => card.classList.toggle("is-active", index <= active));
+        processCards.forEach((card, index) => {
+          const stepProgress = clamp(sectionProgress * processCards.length - index + 0.15);
+          card.style.setProperty("--step-progress", stepProgress);
+          card.classList.toggle("is-active", index <= active);
+        });
       }
 
       onScroll();
@@ -1326,6 +1347,15 @@
       checkCounters();
       window.addEventListener("scroll", checkCounters, { passive: true });
       window.addEventListener("resize", checkCounters);
+
+      faqItems.forEach((item) => {
+        item.addEventListener("toggle", () => {
+          if (!item.open) return;
+          faqItems.forEach((other) => {
+            if (other !== item) other.open = false;
+          });
+        });
+      });
 
       leadForm?.addEventListener("submit", async (event) => {
         event.preventDefault();
