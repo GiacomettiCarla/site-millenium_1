@@ -676,6 +676,10 @@
         padding: clamp(2rem, 4vw, 3.5rem);
       }
 
+      .hidden-honeypot {
+        display: none !important;
+      }
+
       label {
         display: grid;
         min-width: 0;
@@ -722,6 +726,12 @@
       .full,
       form button {
         grid-column: 1 / -1;
+      }
+
+      form button:disabled {
+        cursor: wait;
+        opacity: 0.72;
+        transform: none;
       }
 
       .faq {
@@ -1207,7 +1217,11 @@
                 <div class="contact-line">Atendimento nacional</div>
               </div>
             </div>
-            <form id="lead-form" action="mailto:Millenium.desp@uol.com.br" method="post" enctype="text/plain">
+            <form id="lead-form" action="https://formsubmit.co/ajax/Millenium.desp@uol.com.br" method="post">
+              <input class="hidden-honeypot" type="text" name="_honey" tabindex="-1" autocomplete="off" />
+              <input type="hidden" name="_subject" value="Novo lead! Novo formulário preenchido no site" />
+              <input type="hidden" name="_template" value="table" />
+              <input type="hidden" name="_captcha" value="false" />
               <label>Nome<input name="nome" type="text" placeholder="Seu nome" required /></label>
               <label>Empresa<input name="empresa" type="text" placeholder="Nome da empresa" /></label>
               <label>E-mail<input name="email" type="email" placeholder="seu@email.com" required /></label>
@@ -1252,6 +1266,7 @@
       const processCards = Array.from(document.querySelectorAll(".process-card"));
       const counters = Array.from(document.querySelectorAll(".count-up"));
       const leadForm = document.querySelector("#lead-form");
+      const leadFormEndpoint = "https://formsubmit.co/ajax/Millenium.desp@uol.com.br";
 
       function clamp(value, min = 0, max = 1) {
         return Math.min(max, Math.max(min, value));
@@ -1311,25 +1326,42 @@
       window.addEventListener("scroll", checkCounters, { passive: true });
       window.addEventListener("resize", checkCounters);
 
-      leadForm?.addEventListener("submit", (event) => {
+      leadForm?.addEventListener("submit", async (event) => {
         event.preventDefault();
+        const submitButton = leadForm.querySelector('button[type="submit"]');
+        if (submitButton?.disabled) return;
+
         const formData = new FormData(leadForm);
-        const fields = [
-          ["Nome", formData.get("nome")],
-          ["Empresa", formData.get("empresa")],
-          ["E-mail", formData.get("email")],
-          ["Telefone", formData.get("telefone")],
-          ["Tipo de operação", formData.get("tipo_de_operacao")],
-          ["Previsão ou urgência", formData.get("prazo")],
-          ["Mensagem", formData.get("mensagem")],
-        ];
-        const body = [
-          "Novo formulário preenchido no site da Millenium.",
-          "",
-          ...fields.map(([label, value]) => `${label}: ${value || "Não informado"}`),
-        ].join("\n");
-        const subject = "Novo lead! Novo formulário preenchido no site";
-        window.location.href = `mailto:Millenium.desp@uol.com.br?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        formData.append("_subject", "Novo lead! Novo formulário preenchido no site");
+        formData.append("_template", "table");
+        formData.append("_captcha", "false");
+        formData.append("_replyto", String(formData.get("email") || ""));
+
+        try {
+          if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = "Enviando...";
+          }
+
+          const response = await fetch(leadFormEndpoint, {
+            method: "POST",
+            headers: { Accept: "application/json" },
+            body: formData,
+          });
+
+          if (!response.ok) {
+            throw new Error("Lead form submission failed");
+          }
+
+          leadForm.reset();
+          window.location.href = "obrigado.html";
+        } catch {
+          alert("Não foi possível enviar sua solicitação agora. Tente novamente em alguns minutos.");
+          if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = "Solicitar análise";
+          }
+        }
       });
     </script>
   </body>
