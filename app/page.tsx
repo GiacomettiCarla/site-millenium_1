@@ -23,7 +23,7 @@ import { useEffect, useRef, useState } from "react";
 
 type IconType = typeof Ship;
 
-const LEAD_EMAIL = "Millenium.desp@uol.com.br";
+const LEAD_FORM_ENDPOINT = "https://formsubmit.co/ajax/Millenium.desp@uol.com.br";
 
 const navItems = [
   ["Home", "inicio"],
@@ -188,30 +188,40 @@ function CountUp({ value, suffix = "" }: { value: number; suffix?: string }) {
 export default function Home() {
   const [pageProgress, setPageProgress] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const processRef = useRef<HTMLElement | null>(null);
 
-  const handleLeadSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleLeadSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
-    const fields = [
-      ["Nome", formData.get("nome")],
-      ["Empresa", formData.get("empresa")],
-      ["E-mail", formData.get("email")],
-      ["Telefone", formData.get("telefone")],
-      ["Tipo de operação", formData.get("tipo_de_operacao")],
-      ["Previsão ou urgência", formData.get("prazo")],
-      ["Mensagem", formData.get("mensagem")],
-    ];
+    if (isSubmitting) return;
 
-    const body = [
-      "Novo formulário preenchido no site da Millenium.",
-      "",
-      ...fields.map(([label, value]) => `${label}: ${value || "Não informado"}`),
-    ].join("\n");
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    formData.append("_subject", "Novo lead! Novo formulário preenchido no site");
+    formData.append("_template", "table");
+    formData.append("_captcha", "false");
+    formData.append("_replyto", String(formData.get("email") || ""));
 
-    const subject = "Novo lead! Novo formulário preenchido no site";
-    window.location.href = `mailto:${LEAD_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    try {
+      setIsSubmitting(true);
+      const response = await fetch(LEAD_FORM_ENDPOINT, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Lead form submission failed");
+      }
+
+      form.reset();
+      window.location.href = "/obrigado";
+    } catch {
+      window.alert("Não foi possível enviar sua solicitação agora. Tente novamente em alguns minutos.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   useEffect(() => {
@@ -445,11 +455,14 @@ export default function Home() {
 
             <form
               className="lead-form"
-              action={`mailto:${LEAD_EMAIL}`}
+              action={LEAD_FORM_ENDPOINT}
               method="post"
-              encType="text/plain"
               onSubmit={handleLeadSubmit}
             >
+              <input className="hidden-honeypot" type="text" name="_honey" tabIndex={-1} autoComplete="off" />
+              <input type="hidden" name="_subject" value="Novo lead! Novo formulário preenchido no site" />
+              <input type="hidden" name="_template" value="table" />
+              <input type="hidden" name="_captcha" value="false" />
               <label>
                 Nome
                 <input name="nome" type="text" placeholder="Seu nome" required />
@@ -491,8 +504,8 @@ export default function Home() {
                   required
                 />
               </label>
-              <button type="submit" className="dark-action">
-                Solicitar análise
+              <button type="submit" className="dark-action" disabled={isSubmitting}>
+                {isSubmitting ? "Enviando..." : "Solicitar análise"}
                 <ArrowRight className="size-4" />
               </button>
             </form>

@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Obrigado | Millenium Despachos Aduaneiros</title>
+    <meta name="description" content="Solicitação enviada para a Millenium Despachos Aduaneiros." />
+    <link rel="icon" href="public/favicon.svg" />
+    <style>
+      :root {
+        --brand: #160f65;
+        --cyan: #43cfd8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        font-family: Arial, Helvetica, sans-serif;
+        background: var(--brand);
+      }
+
+      body {
+        min-height: 100vh;
+        overflow-x: hidden;
+        background:
+          linear-gradient(135deg, rgba(22, 15, 101, 0.94), rgba(9, 12, 29, 0.92)),
+          url("public/millenium-empresa.webp") center / cover;
+        color: white;
+        display: grid;
+        place-items: center;
+        padding: 7rem 1.25rem 3rem;
+      }
+
+      .logo {
+        position: fixed;
+        left: 50%;
+        top: 24px;
+        transform: translateX(-50%);
+        display: inline-flex;
+        width: min(220px, calc(100vw - 40px));
+        background: white;
+        padding: 18px 24px;
+        box-shadow: 0 18px 48px rgba(3, 8, 23, 0.18);
+      }
+
+      .logo img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      section {
+        width: min(680px, 100%);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.11);
+        padding: clamp(2rem, 7vw, 4.5rem);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.26);
+      }
+
+      .icon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 26px;
+        color: var(--cyan);
+      }
+
+      .eyebrow {
+        margin: 0 0 16px;
+        color: var(--cyan);
+        font-size: 0.75rem;
+        font-weight: 900;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 11ch;
+        margin: 0;
+        color: white;
+        font-size: clamp(2.15rem, 5vw, 4.1rem);
+        line-height: 1.02;
+      }
+
+      p:not(.eyebrow) {
+        max-width: 52ch;
+        margin: 22px 0 0;
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 1.05rem;
+        line-height: 1.78;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 34px;
+      }
+
+      a:not(.logo) {
+        display: inline-flex;
+        min-height: 48px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid white;
+        padding: 0 22px;
+        color: var(--brand);
+        background: white;
+        font-size: 0.8rem;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+
+      a.secondary {
+        border-color: rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.14);
+        color: white;
+      }
+
+      @media (max-width: 640px) {
+        body {
+          align-items: start;
+          padding: 6.5rem 1rem 2.5rem;
+        }
+
+        .logo {
+          top: 16px;
+          width: min(200px, calc(100vw - 32px));
+          padding: 16px 22px;
+        }
+
+        section {
+          padding: 2rem 1.25rem;
+        }
+
+        h1 {
+          max-width: 100%;
+          font-size: clamp(1.8rem, 8vw, 2.45rem);
+        }
+
+        .actions,
+        a:not(.logo) {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="logo" href="index.html" aria-label="Voltar para a página inicial">
+      <img src="public/millenium-logo.webp" alt="Millenium Despachos Aduaneiros" />
+    </a>
+    <section>
+      <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" />
+      </svg>
+      <p class="eyebrow">Solicitação enviada</p>
+      <h1>Obrigado. A equipe da Millenium recebeu sua demanda.</h1>
+      <p>Em breve entraremos em contato para analisar sua operação, revisar as informações enviadas e orientar os próximos passos.</p>
+      <div class="actions">
+        <a href="index.html">Voltar para o site</a>
+        <a class="secondary" href="index.html#contato">Enviar outra solicitação</a>
+      </div>
+    </section>
+  </body>
+</html>
