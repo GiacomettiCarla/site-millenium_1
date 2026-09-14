@@ -222,7 +222,7 @@ export default function Home() {
             </a>
           ))}
         </nav>
-        <a href="mailto:millenium.desp@uol.com.br" className="header-action inline-flex items-center gap-2 px-4 py-2 text-xs font-black uppercase tracking-[0.1em] transition">
+        <a href="#contato" className="header-action inline-flex items-center gap-2 px-4 py-2 text-xs font-black uppercase tracking-[0.1em] transition">
           Fale conosco
           <ArrowRight className="size-4" />
         </a>
@@ -255,7 +255,7 @@ export default function Home() {
                 Fale com especialista
                 <ArrowRight className="size-4" />
               </a>
-              <a href="#servicos" className="secondary-action">Ver serviços</a>
+              <a href="#contato" className="secondary-action">Solicitar análise</a>
             </div>
           </div>
 
