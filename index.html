@@ -1233,12 +1233,8 @@
                 <div class="contact-line">Atendimento nacional</div>
               </div>
             </div>
-            <form id="lead-form" action="https://formsubmit.co/ajax/Millenium.desp@uol.com.br" method="post">
+            <form id="lead-form" action="enviar-formulario.php" method="post">
               <input class="hidden-honeypot" type="text" name="_honey" tabindex="-1" autocomplete="off" />
-              <input type="hidden" name="_subject" value="Novo lead! Novo formulário preenchido no site" />
-              <input type="hidden" name="_template" value="table" />
-              <input type="hidden" name="_captcha" value="false" />
-              <input type="hidden" name="_cc" value="carlalaisstudy@gmail.com" />
               <label>Nome<input name="nome" type="text" placeholder="Seu nome" required /></label>
               <label>Empresa<input name="empresa" type="text" placeholder="Nome da empresa" /></label>
               <label>E-mail<input name="email" type="email" placeholder="seu@email.com" required /></label>
@@ -1284,7 +1280,6 @@
       const counters = Array.from(document.querySelectorAll(".count-up"));
       const leadForm = document.querySelector("#lead-form");
       const faqItems = Array.from(document.querySelectorAll(".faq-list details"));
-      const leadFormEndpoint = "https://formsubmit.co/ajax/Millenium.desp@uol.com.br";
 
       function clamp(value, min = 0, max = 1) {
         return Math.min(max, Math.max(min, value));
@@ -1357,42 +1352,12 @@
         });
       });
 
-      leadForm?.addEventListener("submit", async (event) => {
-        event.preventDefault();
+      leadForm?.addEventListener("submit", () => {
         const submitButton = leadForm.querySelector('button[type="submit"]');
         if (submitButton?.disabled) return;
-
-        const formData = new FormData(leadForm);
-        formData.append("_subject", "Novo lead! Novo formulário preenchido no site");
-        formData.append("_template", "table");
-        formData.append("_captcha", "false");
-        formData.append("_cc", "carlalaisstudy@gmail.com");
-        formData.append("_replyto", String(formData.get("email") || ""));
-
-        try {
-          if (submitButton) {
-            submitButton.disabled = true;
-            submitButton.textContent = "Enviando...";
-          }
-
-          const response = await fetch(leadFormEndpoint, {
-            method: "POST",
-            headers: { Accept: "application/json" },
-            body: formData,
-          });
-
-          if (!response.ok) {
-            throw new Error("Lead form submission failed");
-          }
-
-          leadForm.reset();
-          window.location.href = "obrigado.html";
-        } catch {
-          alert("Não foi possível enviar sua solicitação agora. Tente novamente em alguns minutos.");
-          if (submitButton) {
-            submitButton.disabled = false;
-            submitButton.textContent = "Solicitar análise";
-          }
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.textContent = "Enviando...";
         }
       });
     </script>

@@ -1,0 +1,96 @@
+<?php
+declare(strict_types=1);
+
+const LEAD_EMAIL = 'Millenium.desp@uol.com.br';
+const COPY_EMAIL = 'carlalaisstudy@gmail.com';
+const THANK_YOU_PAGE = 'obrigado.html';
+
+function clean_text(string $value): string
+{
+    $value = trim(strip_tags($value));
+    return preg_replace('/\s+/', ' ', $value) ?? '';
+}
+
+function field(string $name): string
+{
+    $value = $_POST[$name] ?? '';
+    if (is_array($value)) {
+        return '';
+    }
+
+    return clean_text((string)$value);
+}
+
+function render_error(): never
+{
+    http_response_code(400);
+    echo '<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Erro no envio</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#160f65;color:#fff;font-family:Arial,sans-serif;padding:24px}main{max-width:560px;text-align:center}h1{font-size:clamp(28px,6vw,44px);line-height:1.1}p{color:rgba(255,255,255,.78);line-height:1.7}a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;margin-top:18px;padding:0 22px;background:#fff;color:#160f65;text-decoration:none;font-weight:800;text-transform:uppercase;font-size:13px;letter-spacing:.08em}</style></head><body><main><h1>Não foi possível enviar sua solicitação.</h1><p>Confira os campos obrigatórios e tente novamente. Se o erro continuar, entre em contato pelo e-mail da Millenium.</p><a href="index.html#contato">Voltar ao formulário</a></main></body></html>';
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: index.html#contato', true, 303);
+    exit;
+}
+
+if (field('_honey') !== '') {
+    header('Location: ' . THANK_YOU_PAGE, true, 303);
+    exit;
+}
+
+$name = field('nome');
+$company = field('empresa');
+$email = filter_var(field('email'), FILTER_VALIDATE_EMAIL);
+$phone = field('telefone');
+$operation = field('tipo_de_operacao');
+$deadline = field('prazo');
+$rawMessage = $_POST['mensagem'] ?? '';
+$message = is_array($rawMessage) ? '' : trim(strip_tags((string)$rawMessage));
+
+if ($name === '' || $email === false || $message === '') {
+    render_error();
+}
+
+$host = preg_replace('/:\d+$/', '', (string)($_SERVER['HTTP_HOST'] ?? ''));
+$host = preg_replace('/[^a-z0-9.-]/i', '', $host ?? '');
+$fromDomain = $host !== '' ? $host : 'milleniumdespachos.com.br';
+$fromEmail = 'no-reply@' . $fromDomain;
+
+$subject = 'Novo lead! Novo formulário preenchido no site';
+$encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
+
+$body = implode("\n", [
+    'Novo formulário preenchido no site da Millenium.',
+    '',
+    'Nome: ' . $name,
+    'Empresa: ' . ($company !== '' ? $company : 'Não informado'),
+    'E-mail: ' . $email,
+    'Telefone: ' . ($phone !== '' ? $phone : 'Não informado'),
+    'Tipo de operação: ' . ($operation !== '' ? $operation : 'Não informado'),
+    'Previsão ou urgência: ' . ($deadline !== '' ? $deadline : 'Não informado'),
+    '',
+    'Mensagem:',
+    $message,
+    '',
+    'Enviado em: ' . date('d/m/Y H:i:s'),
+    'IP: ' . clean_text((string)($_SERVER['REMOTE_ADDR'] ?? 'Não informado')),
+]);
+
+$headers = [
+    'MIME-Version: 1.0',
+    'Content-Type: text/plain; charset=UTF-8',
+    'Content-Transfer-Encoding: 8bit',
+    'From: Millenium Site <' . $fromEmail . '>',
+    'Reply-To: ' . $email,
+    'Cc: ' . COPY_EMAIL,
+    'X-Mailer: PHP/' . phpversion(),
+];
+
+$sent = mail(LEAD_EMAIL, $encodedSubject, $body, implode("\r\n", $headers));
+
+if (!$sent) {
+    render_error();
+}
+
+header('Location: ' . THANK_YOU_PAGE, true, 303);
+exit;
