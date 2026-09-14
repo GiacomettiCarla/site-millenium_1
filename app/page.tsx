@@ -18,10 +18,12 @@ import {
   Ship,
   TimerReset,
 } from "lucide-react";
-import type { CSSProperties } from "react";
+import type { CSSProperties, FormEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 
 type IconType = typeof Ship;
+
+const LEAD_EMAIL = "Millenium.desp@uol.com.br";
 
 const navItems = [
   ["Home", "inicio"],
@@ -187,6 +189,30 @@ export default function Home() {
   const [pageProgress, setPageProgress] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
   const processRef = useRef<HTMLElement | null>(null);
+
+  const handleLeadSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const fields = [
+      ["Nome", formData.get("nome")],
+      ["Empresa", formData.get("empresa")],
+      ["E-mail", formData.get("email")],
+      ["Telefone", formData.get("telefone")],
+      ["Tipo de operação", formData.get("tipo_de_operacao")],
+      ["Previsão ou urgência", formData.get("prazo")],
+      ["Mensagem", formData.get("mensagem")],
+    ];
+
+    const body = [
+      "Novo formulário preenchido no site da Millenium.",
+      "",
+      ...fields.map(([label, value]) => `${label}: ${value || "Não informado"}`),
+    ].join("\n");
+
+    const subject = "Novo lead! Novo formulário preenchido no site";
+    window.location.href = `mailto:${LEAD_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
 
   useEffect(() => {
     const onScroll = () => {
@@ -419,9 +445,10 @@ export default function Home() {
 
             <form
               className="lead-form"
-              action="mailto:millenium.desp@uol.com.br"
+              action={`mailto:${LEAD_EMAIL}`}
               method="post"
               encType="text/plain"
+              onSubmit={handleLeadSubmit}
             >
               <label>
                 Nome

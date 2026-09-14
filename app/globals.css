@@ -689,6 +689,8 @@ body {
 .form-shell {
   display: grid;
   grid-template-columns: 0.88fr 1.12fr;
+  width: 100%;
+  max-width: 100%;
   gap: 0;
   overflow: hidden;
   background: white;
@@ -699,6 +701,7 @@ body {
 }
 
 .form-copy {
+  min-width: 0;
   padding: clamp(2rem, 4vw, 3.5rem);
 }
 
@@ -725,6 +728,9 @@ body {
 .lead-form {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   gap: 16px;
   background: var(--brand);
   padding: clamp(2rem, 4vw, 3.5rem);
@@ -732,6 +738,7 @@ body {
 
 .lead-form label {
   display: grid;
+  min-width: 0;
   gap: 8px;
   color: rgba(255, 255, 255, 0.72);
   font-size: 0.78rem;
@@ -744,6 +751,8 @@ body {
 .lead-form select,
 .lead-form textarea {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 0;
   background: rgba(255, 255, 255, 0.055);
@@ -1026,11 +1035,31 @@ body {
     backdrop-filter: blur(8px);
   }
 
-  .hero-actions a,
-  .hero-panel,
   .section-cta {
     width: 100%;
     max-width: 100%;
+  }
+
+  .hero-actions {
+    width: 84%;
+    max-width: 280px;
+  }
+
+  .hero-actions a,
+  .hero-panel {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .primary-action,
+  .secondary-action,
+  .dark-action,
+  .light-action {
+    padding: 0 14px;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-align: center;
+    white-space: normal;
   }
 
   .section-heading h2,
@@ -1102,9 +1131,15 @@ body {
     animation: none;
   }
 
+  .form-copy {
+    padding: 28px 20px;
+  }
+
   .lead-form {
     background: var(--brand);
     opacity: 1;
+    padding: 28px 20px;
+    gap: 14px;
   }
 
   .form-copy .contact-list {
@@ -1115,7 +1150,7 @@ body {
     display: grid;
     order: 3;
     margin: 0;
-    padding: 0 clamp(2rem, 4vw, 3.5rem) clamp(2rem, 4vw, 3.5rem);
+    padding: 0 20px 28px;
   }
 
   .section-pad,
