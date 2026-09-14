@@ -621,6 +621,8 @@
       .form-shell {
         display: grid;
         grid-template-columns: 0.88fr 1.12fr;
+        width: 100%;
+        max-width: 100%;
         overflow: hidden;
         background: white;
         color: var(--brand);
@@ -630,6 +632,7 @@
       }
 
       .form-copy {
+        min-width: 0;
         padding: clamp(2rem, 4vw, 3.5rem);
       }
 
@@ -665,6 +668,9 @@
       form {
         display: grid;
         grid-template-columns: 1fr 1fr;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
         gap: 16px;
         background: var(--brand);
         padding: clamp(2rem, 4vw, 3.5rem);
@@ -672,6 +678,7 @@
 
       label {
         display: grid;
+        min-width: 0;
         gap: 8px;
         color: rgba(255, 255, 255, 0.72);
         font-size: 0.78rem;
@@ -684,6 +691,8 @@
       select,
       textarea {
         width: 100%;
+        max-width: 100%;
+        min-width: 0;
         border: 1px solid rgba(255, 255, 255, 0.14);
         border-radius: 0;
         background: rgba(255, 255, 255, 0.055);
@@ -933,11 +942,31 @@
           backdrop-filter: blur(8px);
         }
 
-        .hero .actions a,
-        .hero-panel,
         .section-cta {
           width: 100%;
           max-width: 100%;
+        }
+
+        .hero .actions {
+          width: 84%;
+          max-width: 280px;
+        }
+
+        .hero .actions a,
+        .hero-panel {
+          width: 100%;
+          max-width: 100%;
+        }
+
+        .header-cta,
+        .primary,
+        .secondary,
+        .dark {
+          padding: 0 14px;
+          font-size: 0.68rem;
+          letter-spacing: 0.06em;
+          text-align: center;
+          white-space: normal;
         }
 
         h2 {
@@ -1001,9 +1030,15 @@
           animation: none;
         }
 
+        .form-copy {
+          padding: 28px 20px;
+        }
+
         form {
           background: var(--brand);
           opacity: 1;
+          padding: 28px 20px;
+          gap: 14px;
         }
 
         .form-copy .contact-list {
@@ -1014,7 +1049,7 @@
           display: grid;
           order: 3;
           margin: 0;
-          padding: 0 clamp(2rem, 4vw, 3.5rem) clamp(2rem, 4vw, 3.5rem);
+          padding: 0 20px 28px;
         }
 
         footer {
@@ -1172,7 +1207,7 @@
                 <div class="contact-line">Atendimento nacional</div>
               </div>
             </div>
-            <form action="mailto:millenium.desp@uol.com.br" method="post" enctype="text/plain">
+            <form id="lead-form" action="mailto:Millenium.desp@uol.com.br" method="post" enctype="text/plain">
               <label>Nome<input name="nome" type="text" placeholder="Seu nome" required /></label>
               <label>Empresa<input name="empresa" type="text" placeholder="Nome da empresa" /></label>
               <label>E-mail<input name="email" type="email" placeholder="seu@email.com" required /></label>
@@ -1216,6 +1251,7 @@
       const processSection = document.querySelector("#processo");
       const processCards = Array.from(document.querySelectorAll(".process-card"));
       const counters = Array.from(document.querySelectorAll(".count-up"));
+      const leadForm = document.querySelector("#lead-form");
 
       function clamp(value, min = 0, max = 1) {
         return Math.min(max, Math.max(min, value));
@@ -1274,6 +1310,27 @@
       checkCounters();
       window.addEventListener("scroll", checkCounters, { passive: true });
       window.addEventListener("resize", checkCounters);
+
+      leadForm?.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const formData = new FormData(leadForm);
+        const fields = [
+          ["Nome", formData.get("nome")],
+          ["Empresa", formData.get("empresa")],
+          ["E-mail", formData.get("email")],
+          ["Telefone", formData.get("telefone")],
+          ["Tipo de operação", formData.get("tipo_de_operacao")],
+          ["Previsão ou urgência", formData.get("prazo")],
+          ["Mensagem", formData.get("mensagem")],
+        ];
+        const body = [
+          "Novo formulário preenchido no site da Millenium.",
+          "",
+          ...fields.map(([label, value]) => `${label}: ${value || "Não informado"}`),
+        ].join("\n");
+        const subject = "Novo lead! Novo formulário preenchido no site";
+        window.location.href = `mailto:Millenium.desp@uol.com.br?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      });
     </script>
   </body>
 </html>
