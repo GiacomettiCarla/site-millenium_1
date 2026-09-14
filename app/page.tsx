@@ -37,17 +37,17 @@ const quickServices: Array<{ icon: IconType; title: string; text: string }> = [
   {
     icon: Anchor,
     title: "Importação",
-    text: "Desembaraço aduaneiro, conferência documental e orientação para reduzir atrasos na chegada da carga.",
+    text: "Assessoria completa para desembaraço, nacionalização e acompanhamento das etapas críticas da chegada da carga.",
   },
   {
     icon: Plane,
     title: "Exportação",
-    text: "Apoio no trâmite de documentos e condução das etapas necessárias para sua operação sair com segurança.",
+    text: "Análise documental e suporte ao despacho aduaneiro para sua operação sair do país com clareza e segurança.",
   },
   {
     icon: FileSearch,
-    title: "Comércio exterior",
-    text: "Assessoria para regimes especiais, Drawback, Admissão Temporária, Consumo de Bordo e consultoria aduaneira.",
+    title: "Operações especiais",
+    text: "Apoio em Drawback, Admissão Temporária, Entreposto Aduaneiro, classificação fiscal, licenças e consultoria aduaneira.",
   },
 ];
 
@@ -81,6 +81,7 @@ const timeline = [
   ["2015", "Crescimento nacional e especialização em bagagem desacompanhada."],
   ["2020", "Atendimento remoto estruturado para manter agilidade e continuidade na operação."],
   ["2024", "Renovação da experiência para elevar clareza, serviço e relacionamento."],
+  ["2026", "Evolução contínua de processos, sistemas e parcerias para acompanhar o mercado global."],
 ];
 
 const contacts = [
@@ -188,6 +189,8 @@ function CountUp({ value, suffix = "" }: { value: number; suffix?: string }) {
 export default function Home() {
   const [pageProgress, setPageProgress] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
+  const [processProgress, setProcessProgress] = useState(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const processRef = useRef<HTMLElement | null>(null);
 
@@ -233,6 +236,7 @@ export default function Home() {
       if (processRef.current) {
         const distance = Math.max(1, processRef.current.offsetHeight - window.innerHeight);
         const progress = clamp((window.scrollY - processRef.current.offsetTop) / distance);
+        setProcessProgress(progress);
         setActiveStep(Math.min(processSteps.length - 1, Math.floor(progress * processSteps.length)));
       }
     };
@@ -373,8 +377,13 @@ export default function Home() {
           <div className="process-stack">
             {processSteps.map((step, index) => {
               const Icon = step.icon;
+              const stepProgress = clamp(processProgress * processSteps.length - index + 0.15);
               return (
-              <article key={step.title} className={`process-card ${index <= activeStep ? "is-active" : ""}`}>
+              <article
+                key={step.title}
+                className={`process-card ${index <= activeStep ? "is-active" : ""}`}
+                style={{ "--step-progress": stepProgress } as CSSProperties}
+              >
                 <span><Icon className="size-5" /></span>
                 <div>
                   <h3>{step.title}</h3>
@@ -528,8 +537,19 @@ export default function Home() {
               <h2>Perguntas frequentes.</h2>
             </div>
             <div className="faq-list">
-              {faqs.map(([question, answer]) => (
-                <details key={question} className="faq-item">
+              {faqs.map(([question, answer], index) => (
+                <details
+                  key={question}
+                  className="faq-item"
+                  open={openFaq === index}
+                  onToggle={(event) => {
+                    if (event.currentTarget.open) {
+                      setOpenFaq(index);
+                    } else if (openFaq === index) {
+                      setOpenFaq(null);
+                    }
+                  }}
+                >
                   <summary>{question}</summary>
                   <p>{answer}</p>
                 </details>
