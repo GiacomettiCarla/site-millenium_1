@@ -25,12 +25,20 @@ function field(string $name): string
     return clean_text((string)$value);
 }
 
-function render_error(): never
+function render_error(string $type = 'send'): never
 {
     if (!headers_sent()) {
-        http_response_code(400);
+        http_response_code($type === 'validation' ? 422 : 500);
     }
-    echo '<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Erro no envio</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#160f65;color:#fff;font-family:Arial,sans-serif;padding:24px}main{max-width:560px;text-align:center}h1{font-size:clamp(28px,6vw,44px);line-height:1.1}p{color:rgba(255,255,255,.78);line-height:1.7}a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;margin-top:18px;padding:0 22px;background:#fff;color:#160f65;text-decoration:none;font-weight:800;text-transform:uppercase;font-size:13px;letter-spacing:.08em}</style></head><body><main><h1>Não foi possível enviar sua solicitação.</h1><p>Confira os campos obrigatórios e tente novamente. Se o erro continuar, entre em contato pelo e-mail da Millenium.</p><a href="index.html#contato">Voltar ao formulário</a></main></body></html>';
+
+    $title = $type === 'validation'
+        ? 'Revise as informações do formulário.'
+        : 'Não conseguimos concluir o envio agora.';
+    $message = $type === 'validation'
+        ? 'Algum campo obrigatório não foi preenchido corretamente. Volte ao formulário e confira as informações destacadas antes de enviar.'
+        : 'O formulário foi preenchido, mas o servidor não conseguiu disparar o e-mail neste momento. Tente novamente em alguns minutos ou entre em contato pelo e-mail da Millenium.';
+
+    echo '<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Erro no envio</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#160f65;color:#fff;font-family:Arial,sans-serif;padding:24px}main{max-width:560px;text-align:center}h1{font-size:clamp(28px,6vw,40px);line-height:1.12}p{color:rgba(255,255,255,.78);line-height:1.7}a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;margin-top:18px;padding:0 22px;background:#fff;color:#160f65;text-decoration:none;font-weight:800;text-transform:uppercase;font-size:13px;letter-spacing:.08em}</style></head><body><main><h1>' . $title . '</h1><p>' . $message . '</p><a href="index.html#contato">Voltar ao formulário</a></main></body></html>';
     exit;
 }
 
@@ -54,7 +62,7 @@ $rawMessage = $_POST['mensagem'] ?? '';
 $message = is_array($rawMessage) ? '' : trim(strip_tags((string)$rawMessage));
 
 if ($name === '' || $email === false || $message === '') {
-    render_error();
+    render_error('validation');
 }
 
 $host = preg_replace('/:\d+$/', '', (string)($_SERVER['HTTP_HOST'] ?? ''));
@@ -95,7 +103,7 @@ $headers = [
 $sent = @mail(LEAD_EMAIL, $encodedSubject, $body, implode("\r\n", $headers));
 
 if (!$sent) {
-    render_error();
+    render_error('send');
 }
 
 header('Location: ' . THANK_YOU_PAGE, true, 303);
