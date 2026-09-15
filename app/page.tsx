@@ -215,9 +215,11 @@ export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [formError, setFormError] = useState("");
   const processRef = useRef<HTMLElement | null>(null);
 
   const updateFieldError = (field: LeadField) => {
+    setFormError("");
     const message = field.checkValidity() ? "" : getLeadFieldMessage(field);
     setFieldErrors((current) => {
       if (current[field.name] === message) return current;
@@ -257,6 +259,7 @@ export default function Home() {
     if (isSubmitting) return;
 
     const form = event.currentTarget;
+    setFormError("");
     if (!validateLeadForm(form)) return;
 
     const formData = new FormData(form);
@@ -282,7 +285,7 @@ export default function Home() {
       setFieldErrors({});
       window.location.href = "/obrigado";
     } catch {
-      window.alert("Não foi possível enviar sua solicitação agora. Tente novamente em alguns minutos.");
+      setFormError("O formulário está preenchido, mas não conseguimos concluir o envio agora. Tente novamente em alguns minutos.");
     } finally {
       setIsSubmitting(false);
     }
@@ -614,6 +617,9 @@ export default function Home() {
                 {isSubmitting ? "Enviando..." : "Solicitar análise"}
                 <ArrowRight className="size-4" />
               </button>
+              <p className={`form-status ${formError ? "is-visible" : ""}`} role="alert" aria-live="polite">
+                {formError}
+              </p>
             </form>
 
             <div className="contact-list mobile-contact-list">

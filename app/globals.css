@@ -736,6 +736,8 @@ body {
 
 .lead-form label {
   display: grid;
+  align-content: start;
+  grid-template-rows: auto auto minmax(34px, auto);
   min-width: 0;
   gap: 8px;
   color: rgba(255, 255, 255, 0.72);
@@ -777,7 +779,8 @@ body {
 }
 
 .field-error {
-  display: none;
+  display: block;
+  visibility: hidden;
   color: #ffd7d7;
   font-size: 0.78rem;
   font-weight: 700;
@@ -787,6 +790,22 @@ body {
 }
 
 .field-error.is-visible {
+  visibility: visible;
+}
+
+.form-status {
+  display: none;
+  grid-column: 1 / -1;
+  border: 1px solid rgba(255, 180, 180, 0.35);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffe8e8;
+  font-size: 0.92rem;
+  font-weight: 650;
+  line-height: 1.45;
+  padding: 14px 16px;
+}
+
+.form-status.is-visible {
   display: block;
 }
 
