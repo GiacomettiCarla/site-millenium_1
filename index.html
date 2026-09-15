@@ -708,6 +708,28 @@
         text-transform: none;
       }
 
+      input.is-invalid,
+      select.is-invalid,
+      textarea.is-invalid {
+        border-color: #ffb4b4;
+        background: rgba(255, 255, 255, 0.095);
+        box-shadow: 0 0 0 3px rgba(255, 180, 180, 0.14);
+      }
+
+      .field-error {
+        display: none;
+        color: #ffd7d7;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0;
+        line-height: 1.35;
+        text-transform: none;
+      }
+
+      .field-error.is-visible {
+        display: block;
+      }
+
       textarea {
         resize: vertical;
       }
@@ -1233,15 +1255,15 @@
                 <div class="contact-line">Atendimento nacional</div>
               </div>
             </div>
-            <form id="lead-form" action="enviar-formulario.php" method="post">
+            <form id="lead-form" action="enviar-formulario.php" method="post" novalidate>
               <input class="hidden-honeypot" type="text" name="_honey" tabindex="-1" autocomplete="off" />
-              <label>Nome<input name="nome" type="text" placeholder="Seu nome" required /></label>
+              <label>Nome<input name="nome" type="text" placeholder="Seu nome" required aria-describedby="erro-nome" /><span class="field-error" id="erro-nome"></span></label>
               <label>Empresa<input name="empresa" type="text" placeholder="Nome da empresa" /></label>
-              <label>E-mail<input name="email" type="email" placeholder="seu@email.com" required /></label>
+              <label>E-mail<input name="email" type="email" placeholder="seu@email.com" required aria-describedby="erro-email" /><span class="field-error" id="erro-email"></span></label>
               <label>Telefone<input name="telefone" type="tel" placeholder="(00) 00000-0000" /></label>
               <label>Tipo de operação<select name="tipo_de_operacao"><option>Importação</option><option>Exportação</option><option>Drawback</option><option>Admissão Temporária</option><option>Consultoria aduaneira</option><option>Outro</option></select></label>
               <label>Previsão ou urgência<input name="prazo" type="text" placeholder="Ex.: carga chega em 10 dias" /></label>
-              <label class="full">Conte um pouco sobre sua demanda<textarea name="mensagem" placeholder="Informe origem, destino, mercadoria, etapa atual e documentos que já possui." rows="5" required></textarea></label>
+              <label class="full">Conte um pouco sobre sua demanda<textarea name="mensagem" placeholder="Informe origem, destino, mercadoria, etapa atual e documentos que já possui." rows="5" required aria-describedby="erro-mensagem"></textarea><span class="field-error" id="erro-mensagem"></span></label>
               <button class="dark" type="submit">Solicitar análise</button>
             </form>
             <div class="contact-list mobile-contact-list">
@@ -1352,7 +1374,69 @@
         });
       });
 
-      leadForm?.addEventListener("submit", () => {
+      const errorMessages = {
+        nome: {
+          valueMissing: "Preencha seu nome para continuar.",
+        },
+        email: {
+          valueMissing: "Preencha seu e-mail para continuarmos.",
+          typeMismatch: "Informe um e-mail válido, como nome@empresa.com.br.",
+        },
+        mensagem: {
+          valueMissing: "Conte rapidamente qual é a sua demanda.",
+        },
+      };
+
+      function getFieldError(field) {
+        const messages = errorMessages[field.name] || {};
+        if (field.validity.valueMissing) return messages.valueMissing || "Preencha este campo.";
+        if (field.validity.typeMismatch) return messages.typeMismatch || "Preencha este campo corretamente.";
+        if (field.validity.patternMismatch) return messages.patternMismatch || "Preencha este campo corretamente.";
+        return "";
+      }
+
+      function setFieldError(field, message) {
+        const error = field.parentElement?.querySelector(".field-error");
+        field.classList.toggle("is-invalid", Boolean(message));
+        field.setAttribute("aria-invalid", message ? "true" : "false");
+        if (error) {
+          error.textContent = message;
+          error.classList.toggle("is-visible", Boolean(message));
+        }
+      }
+
+      function validateField(field) {
+        const message = field.checkValidity() ? "" : getFieldError(field);
+        setFieldError(field, message);
+        return message === "";
+      }
+
+      function validateLeadForm() {
+        const fields = Array.from(leadForm.querySelectorAll("input:not(.hidden-honeypot), select, textarea"));
+        let firstInvalid = null;
+        fields.forEach((field) => {
+          const isValid = validateField(field);
+          if (!isValid && !firstInvalid) firstInvalid = field;
+        });
+        if (firstInvalid) {
+          firstInvalid.focus({ preventScroll: true });
+          firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
+          return false;
+        }
+        return true;
+      }
+
+      leadForm?.querySelectorAll("input:not(.hidden-honeypot), select, textarea").forEach((field) => {
+        field.addEventListener("blur", () => validateField(field));
+        field.addEventListener("input", () => validateField(field));
+        field.addEventListener("change", () => validateField(field));
+      });
+
+      leadForm?.addEventListener("submit", (event) => {
+        if (!validateLeadForm()) {
+          event.preventDefault();
+          return;
+        }
         const submitButton = leadForm.querySelector('button[type="submit"]');
         if (submitButton?.disabled) return;
         if (submitButton) {

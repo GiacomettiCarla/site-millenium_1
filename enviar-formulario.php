@@ -1,6 +1,10 @@
 <?php
 declare(strict_types=1);
 
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+error_reporting(E_ALL);
+
 const LEAD_EMAIL = 'Millenium.desp@uol.com.br';
 const COPY_EMAIL = 'carlalaisstudy@gmail.com';
 const THANK_YOU_PAGE = 'obrigado.html';
@@ -23,7 +27,9 @@ function field(string $name): string
 
 function render_error(): never
 {
-    http_response_code(400);
+    if (!headers_sent()) {
+        http_response_code(400);
+    }
     echo '<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Erro no envio</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#160f65;color:#fff;font-family:Arial,sans-serif;padding:24px}main{max-width:560px;text-align:center}h1{font-size:clamp(28px,6vw,44px);line-height:1.1}p{color:rgba(255,255,255,.78);line-height:1.7}a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;margin-top:18px;padding:0 22px;background:#fff;color:#160f65;text-decoration:none;font-weight:800;text-transform:uppercase;font-size:13px;letter-spacing:.08em}</style></head><body><main><h1>Não foi possível enviar sua solicitação.</h1><p>Confira os campos obrigatórios e tente novamente. Se o erro continuar, entre em contato pelo e-mail da Millenium.</p><a href="index.html#contato">Voltar ao formulário</a></main></body></html>';
     exit;
 }
@@ -86,7 +92,7 @@ $headers = [
     'X-Mailer: PHP/' . phpversion(),
 ];
 
-$sent = mail(LEAD_EMAIL, $encodedSubject, $body, implode("\r\n", $headers));
+$sent = @mail(LEAD_EMAIL, $encodedSubject, $body, implode("\r\n", $headers));
 
 if (!$sent) {
     render_error();
