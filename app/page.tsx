@@ -22,6 +22,7 @@ import type { CSSProperties, FormEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 
 type IconType = typeof Ship;
+type LeadField = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
 const LEAD_FORM_ENDPOINT = "https://formsubmit.co/ajax/Millenium.desp@uol.com.br";
 
@@ -114,6 +115,27 @@ const faqs = [
   ],
 ];
 
+const leadFieldMessages: Record<string, Partial<Record<keyof ValidityState, string>>> = {
+  nome: {
+    valueMissing: "Preencha seu nome para continuar.",
+  },
+  email: {
+    valueMissing: "Preencha seu e-mail para continuarmos.",
+    typeMismatch: "Informe um e-mail válido, como nome@empresa.com.br.",
+  },
+  mensagem: {
+    valueMissing: "Conte rapidamente qual é a sua demanda.",
+  },
+};
+
+function getLeadFieldMessage(field: LeadField) {
+  const messages = leadFieldMessages[field.name] || {};
+  if (field.validity.valueMissing) return messages.valueMissing || "Preencha este campo.";
+  if (field.validity.typeMismatch) return messages.typeMismatch || "Preencha este campo corretamente.";
+  if (field.validity.patternMismatch) return messages.patternMismatch || "Preencha este campo corretamente.";
+  return "";
+}
+
 function clamp(value: number, min = 0, max = 1) {
   return Math.min(max, Math.max(min, value));
 }
@@ -192,7 +214,42 @@ export default function Home() {
   const [processProgress, setProcessProgress] = useState(0);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const processRef = useRef<HTMLElement | null>(null);
+
+  const updateFieldError = (field: LeadField) => {
+    const message = field.checkValidity() ? "" : getLeadFieldMessage(field);
+    setFieldErrors((current) => {
+      if (current[field.name] === message) return current;
+      const next = { ...current };
+      if (message) {
+        next[field.name] = message;
+      } else {
+        delete next[field.name];
+      }
+      return next;
+    });
+  };
+
+  const validateLeadForm = (form: HTMLFormElement) => {
+    const fields = Array.from(form.querySelectorAll<LeadField>("input:not(.hidden-honeypot), select, textarea"));
+    const nextErrors: Record<string, string> = {};
+    let firstInvalid: LeadField | null = null;
+
+    fields.forEach((field) => {
+      if (field.checkValidity()) return;
+      nextErrors[field.name] = getLeadFieldMessage(field);
+      firstInvalid ??= field;
+    });
+
+    setFieldErrors(nextErrors);
+    if (firstInvalid) {
+      firstInvalid.focus({ preventScroll: true });
+      firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
+      return false;
+    }
+    return true;
+  };
 
   const handleLeadSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -200,6 +257,8 @@ export default function Home() {
     if (isSubmitting) return;
 
     const form = event.currentTarget;
+    if (!validateLeadForm(form)) return;
+
     const formData = new FormData(form);
     formData.append("_subject", "Novo lead! Novo formulário preenchido no site");
     formData.append("_template", "table");
@@ -220,6 +279,7 @@ export default function Home() {
       }
 
       form.reset();
+      setFieldErrors({});
       window.location.href = "/obrigado";
     } catch {
       window.alert("Não foi possível enviar sua solicitação agora. Tente novamente em alguns minutos.");
@@ -468,6 +528,7 @@ export default function Home() {
               action={LEAD_FORM_ENDPOINT}
               method="post"
               onSubmit={handleLeadSubmit}
+              noValidate
             >
               <input className="hidden-honeypot" type="text" name="_honey" tabIndex={-1} autoComplete="off" />
               <input type="hidden" name="_subject" value="Novo lead! Novo formulário preenchido no site" />
@@ -476,7 +537,20 @@ export default function Home() {
               <input type="hidden" name="_cc" value="carlalaisstudy@gmail.com" />
               <label>
                 Nome
-                <input name="nome" type="text" placeholder="Seu nome" required />
+                <input
+                  className={fieldErrors.nome ? "is-invalid" : ""}
+                  name="nome"
+                  type="text"
+                  placeholder="Seu nome"
+                  required
+                  aria-invalid={fieldErrors.nome ? "true" : "false"}
+                  aria-describedby="erro-nome"
+                  onBlur={(event) => updateFieldError(event.currentTarget)}
+                  onInput={(event) => updateFieldError(event.currentTarget)}
+                />
+                <span className={`field-error ${fieldErrors.nome ? "is-visible" : ""}`} id="erro-nome">
+                  {fieldErrors.nome}
+                </span>
               </label>
               <label>
                 Empresa
@@ -484,7 +558,20 @@ export default function Home() {
               </label>
               <label>
                 E-mail
-                <input name="email" type="email" placeholder="seu@email.com" required />
+                <input
+                  className={fieldErrors.email ? "is-invalid" : ""}
+                  name="email"
+                  type="email"
+                  placeholder="seu@email.com"
+                  required
+                  aria-invalid={fieldErrors.email ? "true" : "false"}
+                  aria-describedby="erro-email"
+                  onBlur={(event) => updateFieldError(event.currentTarget)}
+                  onInput={(event) => updateFieldError(event.currentTarget)}
+                />
+                <span className={`field-error ${fieldErrors.email ? "is-visible" : ""}`} id="erro-email">
+                  {fieldErrors.email}
+                </span>
               </label>
               <label>
                 Telefone
@@ -509,11 +596,19 @@ export default function Home() {
               <label className="full-field">
                 Conte um pouco sobre sua demanda
                 <textarea
+                  className={fieldErrors.mensagem ? "is-invalid" : ""}
                   name="mensagem"
                   placeholder="Informe origem, destino, mercadoria, etapa atual e documentos que já possui."
                   rows={5}
                   required
+                  aria-invalid={fieldErrors.mensagem ? "true" : "false"}
+                  aria-describedby="erro-mensagem"
+                  onBlur={(event) => updateFieldError(event.currentTarget)}
+                  onInput={(event) => updateFieldError(event.currentTarget)}
                 />
+                <span className={`field-error ${fieldErrors.mensagem ? "is-visible" : ""}`} id="erro-mensagem">
+                  {fieldErrors.mensagem}
+                </span>
               </label>
               <button type="submit" className="dark-action" disabled={isSubmitting}>
                 {isSubmitting ? "Enviando..." : "Solicitar análise"}
