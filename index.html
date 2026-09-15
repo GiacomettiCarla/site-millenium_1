@@ -680,6 +680,8 @@
 
       label {
         display: grid;
+        align-content: start;
+        grid-template-rows: auto auto minmax(34px, auto);
         min-width: 0;
         gap: 8px;
         color: rgba(255, 255, 255, 0.72);
@@ -717,7 +719,8 @@
       }
 
       .field-error {
-        display: none;
+        display: block;
+        visibility: hidden;
         color: #ffd7d7;
         font-size: 0.78rem;
         font-weight: 700;
@@ -727,6 +730,22 @@
       }
 
       .field-error.is-visible {
+        visibility: visible;
+      }
+
+      .form-status {
+        display: none;
+        grid-column: 1 / -1;
+        border: 1px solid rgba(255, 180, 180, 0.35);
+        background: rgba(255, 255, 255, 0.08);
+        color: #ffe8e8;
+        font-size: 0.92rem;
+        font-weight: 650;
+        line-height: 1.45;
+        padding: 14px 16px;
+      }
+
+      .form-status.is-visible {
         display: block;
       }
 
@@ -1265,6 +1284,7 @@
               <label>Previsão ou urgência<input name="prazo" type="text" placeholder="Ex.: carga chega em 10 dias" /></label>
               <label class="full">Conte um pouco sobre sua demanda<textarea name="mensagem" placeholder="Informe origem, destino, mercadoria, etapa atual e documentos que já possui." rows="5" required aria-describedby="erro-mensagem"></textarea><span class="field-error" id="erro-mensagem"></span></label>
               <button class="dark" type="submit">Solicitar análise</button>
+              <p class="form-status" role="alert" aria-live="polite"></p>
             </form>
             <div class="contact-list mobile-contact-list">
               <div class="contact-line">millenium.desp@uol.com.br</div>
@@ -1426,22 +1446,59 @@
         return true;
       }
 
+      function setFormStatus(message) {
+        const status = leadForm?.querySelector(".form-status");
+        if (!status) return;
+        status.textContent = message || "";
+        status.classList.toggle("is-visible", Boolean(message));
+      }
+
       leadForm?.querySelectorAll("input:not(.hidden-honeypot), select, textarea").forEach((field) => {
-        field.addEventListener("blur", () => validateField(field));
-        field.addEventListener("input", () => validateField(field));
-        field.addEventListener("change", () => validateField(field));
+        field.addEventListener("blur", () => {
+          setFormStatus("");
+          validateField(field);
+        });
+        field.addEventListener("input", () => {
+          setFormStatus("");
+          validateField(field);
+        });
+        field.addEventListener("change", () => {
+          setFormStatus("");
+          validateField(field);
+        });
       });
 
-      leadForm?.addEventListener("submit", (event) => {
+      leadForm?.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        setFormStatus("");
         if (!validateLeadForm()) {
-          event.preventDefault();
           return;
         }
         const submitButton = leadForm.querySelector('button[type="submit"]');
         if (submitButton?.disabled) return;
+
         if (submitButton) {
           submitButton.disabled = true;
           submitButton.textContent = "Enviando...";
+        }
+
+        try {
+          const response = await fetch(leadForm.action, {
+            method: "POST",
+            body: new FormData(leadForm),
+          });
+
+          if (!response.ok) {
+            throw new Error("Form submission failed");
+          }
+
+          window.location.href = response.redirected ? response.url : "obrigado.html";
+        } catch {
+          setFormStatus("O formulário está preenchido, mas o servidor não conseguiu concluir o envio agora. No GitHub Pages isso é esperado porque ele não executa PHP. O teste real deve ser feito no FTP da cliente.");
+          if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = "Solicitar análise";
+          }
         }
       });
     </script>
