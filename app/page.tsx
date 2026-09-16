@@ -126,6 +126,9 @@ const leadFieldMessages: Record<string, Partial<Record<keyof ValidityState, stri
   mensagem: {
     valueMissing: "Conte rapidamente qual é a sua demanda.",
   },
+  privacidade: {
+    valueMissing: "Confirme que leu a Política de Privacidade.",
+  },
 };
 
 function getLeadFieldMessage(field: LeadField) {
@@ -613,6 +616,25 @@ export default function Home() {
                   {fieldErrors.mensagem}
                 </span>
               </label>
+              <label className="privacy-consent full-field">
+                <input
+                  className={fieldErrors.privacidade ? "is-invalid" : ""}
+                  name="privacidade"
+                  type="checkbox"
+                  value="ciente"
+                  required
+                  aria-invalid={fieldErrors.privacidade ? "true" : "false"}
+                  aria-describedby="erro-privacidade"
+                  onBlur={(event) => updateFieldError(event.currentTarget)}
+                  onChange={(event) => updateFieldError(event.currentTarget)}
+                />
+                <span>
+                  Li e estou ciente da <a href="/politica-de-privacidade" target="_blank" rel="noreferrer">Política de Privacidade</a> e do uso dos meus dados para retorno sobre esta solicitação.
+                </span>
+                <span className={`field-error ${fieldErrors.privacidade ? "is-visible" : ""}`} id="erro-privacidade">
+                  {fieldErrors.privacidade}
+                </span>
+              </label>
               <button type="submit" className="dark-action" disabled={isSubmitting}>
                 {isSubmitting ? "Enviando..." : "Solicitar análise"}
                 <ArrowRight className="size-4" />
@@ -658,11 +680,30 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <footer className="mx-auto flex max-w-7xl flex-col justify-between gap-3 px-5 py-8 text-sm text-slate-500 sm:flex-row sm:px-8 lg:px-14">
-          <span>Millenium Despachos Aduaneiros</span>
-          <span>Ética, transparência e compromisso com seus clientes.</span>
-        </footer>
       </section>
+
+      <footer className="site-footer">
+        <div className="site-footer-main">
+          <div className="site-footer-brand">
+            <img src="/millenium-logo.webp" alt="Millenium Despachos Aduaneiros" />
+            <p>Despacho aduaneiro com experiência, clareza e acompanhamento próximo.</p>
+          </div>
+          <div className="site-footer-column">
+            <span className="site-footer-label">Empresa</span>
+            <strong>Millenium Despachos Aduaneiros Ltda.</strong>
+            <span>CNPJ 02.566.190/0001-34</span>
+          </div>
+          <div className="site-footer-column">
+            <span className="site-footer-label">Privacidade e contato</span>
+            <a href="/politica-de-privacidade">Política de Privacidade</a>
+            <a href="mailto:millenium.desp@uol.com.br">millenium.desp@uol.com.br</a>
+          </div>
+        </div>
+        <div className="site-footer-bottom">
+          <span>© 2026 Millenium Despachos Aduaneiros. Todos os direitos reservados.</span>
+          <span>Ética, transparência e compromisso com seus clientes.</span>
+        </div>
+      </footer>
     </main>
   );
 }

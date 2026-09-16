@@ -4,6 +4,7 @@ Suba estes itens para a pasta publica do site da cliente, normalmente `public_ht
 
 - `index.html`
 - `obrigado.html`
+- `politica-de-privacidade.html`
 - `enviar-formulario.php`
 - pasta `public/`
 

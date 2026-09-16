@@ -22,6 +22,10 @@ export default function ObrigadoPage() {
           <a href="/#contato" className="secondary-action thank-you-secondary">Enviar outra solicitação</a>
         </div>
       </section>
+      <div className="thank-you-legal">
+        <span>Millenium Despachos Aduaneiros Ltda. · CNPJ 02.566.190/0001-34</span>
+        <a href="/politica-de-privacidade">Política de Privacidade</a>
+      </div>
     </main>
   );
 }
