@@ -1266,9 +1266,49 @@
         form {
           background: var(--brand);
           opacity: 1;
-          padding: 28px 20px;
-          gap: 14px;
+          grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+          padding: 24px 16px;
+          gap: 12px;
         }
+
+        #lead-form > label {
+          grid-column: 1 / -1;
+        }
+
+        #lead-form > label.compact-pair {
+          grid-column: auto;
+        }
+
+        #lead-form > label:not(.privacy-consent) {
+          grid-template-rows: auto auto;
+          gap: 6px;
+          font-size: 0.875rem;
+          letter-spacing: 0;
+          text-transform: none;
+        }
+
+        #lead-form input:not([type="checkbox"]),
+        #lead-form select,
+        #lead-form textarea {
+          min-height: 44px;
+          padding: 10px 9px;
+          font-size: 1rem;
+        }
+
+        #lead-form textarea {
+          height: 104px;
+          min-height: 104px;
+          resize: vertical;
+        }
+
+        #lead-form .field-error:not(.is-visible) {
+          display: none;
+        }
+
+        #lead-form button {
+          min-height: 48px;
+        }
+
 
         .form-copy .contact-list {
           display: none;
@@ -1448,10 +1488,10 @@
             </div>
             <form id="lead-form" action="enviar-formulario.php" method="post" novalidate>
               <input class="hidden-honeypot" type="text" name="_honey" tabindex="-1" autocomplete="off" />
-              <label>Nome<input name="nome" type="text" placeholder="Seu nome" required aria-describedby="erro-nome" /><span class="field-error" id="erro-nome"></span></label>
-              <label>Empresa<input name="empresa" type="text" placeholder="Nome da empresa" /></label>
-              <label>E-mail<input name="email" type="email" placeholder="seu@email.com" required aria-describedby="erro-email" /><span class="field-error" id="erro-email"></span></label>
-              <label>Telefone<input name="telefone" type="tel" placeholder="(00) 00000-0000" /></label>
+              <label class="compact-pair">Nome<input name="nome" type="text" autocomplete="name" placeholder="Seu nome" required aria-describedby="erro-nome" /><span class="field-error" id="erro-nome"></span></label>
+              <label class="compact-pair">Telefone<input name="telefone" type="tel" autocomplete="tel" placeholder="DDD + número" /></label>
+              <label>E-mail<input name="email" type="email" autocomplete="email" placeholder="seu@email.com" required aria-describedby="erro-email" /><span class="field-error" id="erro-email"></span></label>
+              <label>Empresa<input name="empresa" type="text" autocomplete="organization" placeholder="Nome da empresa" /></label>
               <label>Tipo de operação<select name="tipo_de_operacao"><option>Importação</option><option>Exportação</option><option>Drawback</option><option>Admissão Temporária</option><option>Consultoria aduaneira</option><option>Outro</option></select></label>
               <label>Previsão ou urgência<input name="prazo" type="text" placeholder="Ex.: carga chega em 10 dias" /></label>
               <label class="full">Conte um pouco sobre sua demanda<textarea name="mensagem" placeholder="Informe origem, destino, mercadoria, etapa atual e documentos que já possui." rows="5" required aria-describedby="erro-mensagem"></textarea><span class="field-error" id="erro-mensagem"></span></label>
