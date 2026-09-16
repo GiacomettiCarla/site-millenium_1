@@ -400,9 +400,6 @@
           border-color 360ms ease,
           box-shadow 360ms ease,
           background 360ms ease;
-        animation: reveal linear both;
-        animation-timeline: view();
-        animation-range: entry 0% cover 24%;
       }
 
       .card {
@@ -489,9 +486,6 @@
         border: 1px solid rgba(22, 15, 101, 0.12);
         overflow: hidden;
         box-shadow: 0 28px 80px rgba(22, 15, 101, 0.12);
-        animation: reveal linear both;
-        animation-timeline: view();
-        animation-range: entry 6% cover 42%;
       }
 
       .image-frame img {
@@ -1333,6 +1327,80 @@
           gap: 8px;
         }
       }
+      @media (prefers-reduced-motion: no-preference) {
+        .scroll-reveal {
+          transition: opacity 600ms ease, translate 600ms cubic-bezier(0.22, 1, 0.36, 1),
+            transform 360ms ease, border-color 360ms ease, box-shadow 360ms ease, background 360ms ease;
+        }
+
+        .scroll-reveal.is-reveal-pending {
+          opacity: 0;
+          translate: 0 18px;
+        }
+
+        .scroll-reveal:focus-within {
+          opacity: 1;
+          translate: none;
+          transition: none;
+        }
+      }
+
+      @media (min-width: 641px) {
+        .form-copy, #lead-form {
+          padding: 32px;
+        }
+
+        .form-copy h2 {
+          font-size: 2rem;
+          line-height: 1.2;
+        }
+
+        .form-copy .contact-list {
+          gap: 12px;
+          margin-top: 24px;
+        }
+
+        .form-copy .contact-list > div {
+          padding-top: 12px;
+        }
+
+        #lead-form {
+          align-content: start;
+          gap: 12px 16px;
+        }
+
+        #lead-form > label:not(.privacy-consent) {
+          grid-template-rows: auto auto;
+          gap: 6px;
+          font-size: 0.875rem;
+          letter-spacing: 0;
+          text-transform: none;
+        }
+
+        #lead-form .field-error:not(.is-visible) {
+          display: none;
+        }
+
+        #lead-form input:not([type="checkbox"]), #lead-form select, #lead-form textarea {
+          min-height: 44px;
+          padding: 10px 12px;
+          font-size: 1rem;
+        }
+
+        #lead-form textarea {
+          height: 112px;
+          min-height: 112px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          scroll-behavior: auto !important;
+          animation-duration: 1ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 1ms !important;
+        }
+      }
     </style>
   </head>
   <body>
@@ -1552,6 +1620,45 @@
     </main>
 
     <script>
+      (() => {
+
+      const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      if (motion.matches || !("IntersectionObserver" in window)) return;
+      const targets = Array.from(document.querySelectorAll(
+        ".section-heading, .section-head, .service-card, .card, .reason-card, .reason, .timeline-item, .image-frame, .about-copy, .form-shell, .faq-list"
+      ));
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.remove("is-reveal-pending");
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0, rootMargin: "0px 0px -24px 0px" });
+
+      // Enhance only offscreen content; the initial view and no-JS page stay visible.
+      targets.forEach((target) => {
+        if (target.getBoundingClientRect().top < window.innerHeight) return;
+        target.classList.add("scroll-reveal", "is-reveal-pending");
+        observer.observe(target);
+      });
+
+      const showAll = () => {
+        observer.disconnect();
+        targets.forEach((target) => target.classList.remove("is-reveal-pending", "scroll-reveal"));
+      };
+      const onMotionChange = () => { if (motion.matches) showAll(); };
+      const onFocus = (event) => {
+        if (!(event.target instanceof Element)) return;
+        const target = event.target.closest(".is-reveal-pending");
+        if (target) {
+          target.classList.remove("is-reveal-pending");
+          observer.unobserve(target);
+        }
+      };
+      motion.addEventListener("change", onMotionChange);
+      document.addEventListener("focusin", onFocus);
+      })();
+
       const progress = document.querySelector("#progress");
       const processSection = document.querySelector("#processo");
       const processCards = Array.from(document.querySelectorAll(".process-card"));
