@@ -691,7 +691,7 @@
         text-transform: uppercase;
       }
 
-      input,
+      input:not([type="checkbox"]),
       select,
       textarea {
         width: 100%;
@@ -710,7 +710,7 @@
         text-transform: none;
       }
 
-      input.is-invalid,
+      input:not([type="checkbox"]).is-invalid,
       select.is-invalid,
       textarea.is-invalid {
         border-color: #ffb4b4;
@@ -757,7 +757,7 @@
         color: var(--brand);
       }
 
-      input::placeholder,
+      input:not([type="checkbox"])::placeholder,
       textarea::placeholder {
         color: rgba(255, 255, 255, 0.38);
       }
@@ -765,6 +765,42 @@
       .full,
       form button {
         grid-column: 1 / -1;
+      }
+
+      .privacy-consent {
+        grid-template-columns: 20px minmax(0, 1fr);
+        grid-template-rows: auto auto;
+        align-items: start;
+        gap: 7px 10px;
+        color: rgba(255, 255, 255, 0.82);
+        font-size: 0.86rem;
+        font-weight: 520;
+        letter-spacing: 0;
+        line-height: 1.5;
+        text-transform: none;
+      }
+
+      .privacy-consent input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        margin: 2px 0 0;
+        accent-color: var(--cyan);
+      }
+
+      .privacy-consent input[type="checkbox"].is-invalid {
+        outline: 2px solid #ffb4b4;
+        outline-offset: 2px;
+      }
+
+      .privacy-consent a {
+        color: white;
+        font-weight: 760;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .privacy-consent .field-error {
+        grid-column: 2;
       }
 
       form button:disabled {
@@ -833,13 +869,80 @@
         animation: faq-answer 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
       }
 
-      footer {
+      .site-footer {
+        background: #0a0736;
+        color: rgba(255, 255, 255, 0.76);
+      }
+
+      .site-footer-main,
+      .site-footer-bottom {
+        width: min(1280px, 100%);
+        margin: 0 auto;
+        padding-right: clamp(1.25rem, 4vw, 3.5rem);
+        padding-left: clamp(1.25rem, 4vw, 3.5rem);
+      }
+
+      .site-footer-main {
+        display: grid;
+        grid-template-columns: 1.15fr 1fr 0.9fr;
+        gap: clamp(2rem, 5vw, 5rem);
+        padding-top: 52px;
+        padding-bottom: 42px;
+      }
+
+      .site-footer-brand img {
+        display: block;
+        width: min(210px, 100%);
+        height: auto;
+        background: white;
+        padding: 14px 18px;
+      }
+
+      .site-footer-brand p {
+        max-width: 36ch;
+        margin: 20px 0 0;
+        color: rgba(255, 255, 255, 0.68);
+        line-height: 1.65;
+      }
+
+      .site-footer-column {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 9px;
+        line-height: 1.55;
+      }
+
+      .site-footer-column strong {
+        color: white;
+        font-weight: 700;
+      }
+
+      .site-footer-column a {
+        color: white;
+        text-decoration: underline;
+        text-decoration-color: rgba(255, 255, 255, 0.35);
+        text-underline-offset: 4px;
+      }
+
+      .site-footer-label {
+        margin-bottom: 4px;
+        color: var(--cyan);
+        font-size: 0.74rem;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .site-footer-bottom {
         display: flex;
         justify-content: space-between;
-        gap: 12px;
-        padding: 32px 0 0;
-        color: #64748b;
-        font-size: 0.9rem;
+        gap: 24px;
+        border-top: 1px solid rgba(255, 255, 255, 0.13);
+        padding-top: 22px;
+        padding-bottom: 24px;
+        color: rgba(255, 255, 255, 0.52);
+        font-size: 0.82rem;
       }
 
       @keyframes enter {
@@ -1118,8 +1221,16 @@
           padding: 0 20px 28px;
         }
 
-        footer {
+        .site-footer-main {
+          grid-template-columns: 1fr;
+          gap: 30px;
+          padding-top: 40px;
+          padding-bottom: 32px;
+        }
+
+        .site-footer-bottom {
           flex-direction: column;
+          gap: 8px;
         }
       }
     </style>
@@ -1283,6 +1394,11 @@
               <label>Tipo de operação<select name="tipo_de_operacao"><option>Importação</option><option>Exportação</option><option>Drawback</option><option>Admissão Temporária</option><option>Consultoria aduaneira</option><option>Outro</option></select></label>
               <label>Previsão ou urgência<input name="prazo" type="text" placeholder="Ex.: carga chega em 10 dias" /></label>
               <label class="full">Conte um pouco sobre sua demanda<textarea name="mensagem" placeholder="Informe origem, destino, mercadoria, etapa atual e documentos que já possui." rows="5" required aria-describedby="erro-mensagem"></textarea><span class="field-error" id="erro-mensagem"></span></label>
+              <label class="privacy-consent full">
+                <input name="privacidade" type="checkbox" value="ciente" required aria-describedby="erro-privacidade" />
+                <span>Li e estou ciente da <a href="politica-de-privacidade.html" target="_blank" rel="noopener noreferrer">Política de Privacidade</a> e do uso dos meus dados para retorno sobre esta solicitação.</span>
+                <span class="field-error" id="erro-privacidade"></span>
+              </label>
               <button class="dark" type="submit">Solicitar análise</button>
               <p class="form-status" role="alert" aria-live="polite"></p>
             </form>
@@ -1307,12 +1423,31 @@
               <details><summary>Que informações devo enviar para uma primeira análise?</summary><p>Envie o tipo de operação, origem ou destino, descrição da mercadoria, previsão de chegada ou embarque e quais documentos já possui. Com isso a equipe consegue orientar a próxima etapa.</p></details>
             </div>
           </div>
-          <footer>
-            <span>Millenium Despachos Aduaneiros</span>
-            <span>Ética, transparência e compromisso com seus clientes.</span>
-          </footer>
         </div>
       </section>
+
+      <footer class="site-footer">
+        <div class="site-footer-main">
+          <div class="site-footer-brand">
+            <img src="public/millenium-logo.webp" alt="Millenium Despachos Aduaneiros" />
+            <p>Despacho aduaneiro com experiência, clareza e acompanhamento próximo.</p>
+          </div>
+          <div class="site-footer-column">
+            <span class="site-footer-label">Empresa</span>
+            <strong>Millenium Despachos Aduaneiros Ltda.</strong>
+            <span>CNPJ 02.566.190/0001-34</span>
+          </div>
+          <div class="site-footer-column">
+            <span class="site-footer-label">Privacidade e contato</span>
+            <a href="politica-de-privacidade.html">Política de Privacidade</a>
+            <a href="mailto:millenium.desp@uol.com.br">millenium.desp@uol.com.br</a>
+          </div>
+        </div>
+        <div class="site-footer-bottom">
+          <span>© 2026 Millenium Despachos Aduaneiros. Todos os direitos reservados.</span>
+          <span>Ética, transparência e compromisso com seus clientes.</span>
+        </div>
+      </footer>
     </main>
 
     <script>
@@ -1404,6 +1539,9 @@
         },
         mensagem: {
           valueMissing: "Conte rapidamente qual é a sua demanda.",
+        },
+        privacidade: {
+          valueMissing: "Confirme que leu a Política de Privacidade.",
         },
       };
 

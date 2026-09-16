@@ -58,10 +58,11 @@ $email = filter_var(field('email'), FILTER_VALIDATE_EMAIL);
 $phone = field('telefone');
 $operation = field('tipo_de_operacao');
 $deadline = field('prazo');
+$privacy = field('privacidade');
 $rawMessage = $_POST['mensagem'] ?? '';
 $message = is_array($rawMessage) ? '' : trim(strip_tags((string)$rawMessage));
 
-if ($name === '' || $email === false || $message === '') {
+if ($name === '' || $email === false || $message === '' || $privacy !== 'ciente') {
     render_error('validation');
 }
 
@@ -87,7 +88,6 @@ $body = implode("\n", [
     $message,
     '',
     'Enviado em: ' . date('d/m/Y H:i:s'),
-    'IP: ' . clean_text((string)($_SERVER['REMOTE_ADDR'] ?? 'Não informado')),
 ]);
 
 $headers = [

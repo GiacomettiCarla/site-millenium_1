@@ -104,7 +104,7 @@
         margin-top: 34px;
       }
 
-      a:not(.logo) {
+      .actions a {
         display: inline-flex;
         min-height: 48px;
         align-items: center;
@@ -124,6 +124,25 @@
         border-color: rgba(255, 255, 255, 0.3);
         background: rgba(255, 255, 255, 0.14);
         color: white;
+      }
+
+      .legal {
+        position: fixed;
+        right: 20px;
+        bottom: 18px;
+        left: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 18px;
+        color: rgba(255, 255, 255, 0.62);
+        font-size: 0.78rem;
+        text-align: center;
+      }
+
+      .legal a {
+        color: white;
+        font-weight: 700;
+        text-underline-offset: 3px;
       }
 
       @media (max-width: 640px) {
@@ -154,8 +173,15 @@
         }
 
         .actions,
-        a:not(.logo) {
+        .actions a {
           width: 100%;
+        }
+
+        .legal {
+          position: static;
+          flex-direction: column;
+          margin-top: 24px;
+          gap: 7px;
         }
       }
     </style>
@@ -177,5 +203,9 @@
         <a class="secondary" href="index.html#contato">Enviar outra solicitação</a>
       </div>
     </section>
+    <div class="legal">
+      <span>Millenium Despachos Aduaneiros Ltda. · CNPJ 02.566.190/0001-34</span>
+      <a href="politica-de-privacidade.html">Política de Privacidade</a>
+    </div>
   </body>
 </html>
