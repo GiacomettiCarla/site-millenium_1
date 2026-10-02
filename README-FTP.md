@@ -5,8 +5,16 @@ Suba estes itens para a pasta publica do site da cliente, normalmente `public_ht
 - `index.html`
 - `obrigado.html`
 - `politica-de-privacidade.html`
+- `sobre-nos.html`
+- todos os arquivos `servicos-*.html` (oito paginas de servicos)
 - `enviar-formulario.php`
 - pasta `public/`
+
+Na revisao de 01/10/2026, os cards e a lista de servicos da abertura passaram a
+abrir paginas individuais. Publique as paginas e os arquivos
+`public/revision.css` e `public/millenium-logo-mda.jpeg` antes de atualizar
+`index.html`. O parametro `servico` no link de retorno preenche a operacao
+no formulario; nao altera o envio PHP.
 
 O formulario do `index.html` envia os dados para `enviar-formulario.php`.
 
