@@ -6,7 +6,6 @@ ini_set('log_errors', '1');
 error_reporting(E_ALL);
 
 const LEAD_EMAIL = 'Millenium.desp@uol.com.br';
-const COPY_EMAIL = 'carlalaisstudy@gmail.com';
 const THANK_YOU_PAGE = 'obrigado.html';
 
 function clean_text(string $value): string
@@ -96,7 +95,6 @@ $headers = [
     'Content-Transfer-Encoding: 8bit',
     'From: Millenium Site <' . $fromEmail . '>',
     'Reply-To: ' . $email,
-    'Cc: ' . COPY_EMAIL,
     'X-Mailer: PHP/' . phpversion(),
 ];
 
